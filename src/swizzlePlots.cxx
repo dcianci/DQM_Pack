@@ -93,16 +93,16 @@ bool makePlots(int rnum){
 		TH1D* hSampleDiff = new TH1D("Sample Difference", "Sample Difference; Sample;", 9, -5, 5);
 		TH1D* hFrameDiffBNB = new TH1D("Frame Diff (BNB)", "Frame Difference (BNB); Frame;", 9,-5,5);
 		TH1D* hSampleDiffBNB = new TH1D("Sample Diff (BNB)", "Sample Difference (BNB); Sample;", 9, -5, 5);
-		TH1D* hFrameDiffNuMI = new TH1D("Frame Diff (NuMI", "Frame Difference (NuMI); Frame;", 9,-5,5);
+		TH1D* hFrameDiffNuMI = new TH1D("Frame Diff (NuMI)", "Frame Difference (NuMI); Frame;", 9,-5,5);
 		TH1D* hSampleDiffNuMI = new TH1D("Sample Diff (NuMI", "Sample Difference (NuMI); Sample;", 9, -5, 5);
 		TH1D* hFrameDiffEXT = new TH1D("Frame Diff (EXT)", "Frame Difference (EXT); Frame;", 9,-5,5);
 		TH1D* hSampleDiffEXT = new TH1D("Sample Diff (EXT)", "Sample Difference (EXT); Sample;", 9, -5, 5);
-		TH1D* hFrameDiffBetweenROAndBNBTrig = new TH1D("Frame Diff (BNB)","Frame Diff from RO to BNB Trigger; Frame;",9,-5,5);
-		TH1D* hFrameDiffBetweenROAndNuMITrig = new TH1D("Frame Diff (NuMI)","Frame Diff from RO to NuMI Trigger; Frame;",9,-5,5);
-		TH1D* hFrameDiffBetweenROAndEXTTrig = new TH1D("Frame Diff (EXT)","Frame Diff from RO to EXT Trigger; Frame;",9,-5,5);
-		TH1D* hSampleDiffBetweenROAndBNBTrig = new TH1D("Sample Diff (BNB)","Sample Diff from RO to BNB Trigger; Sample;",19,-10,10);
-		TH1D* hSampleDiffBetweenROAndNuMITrig = new TH1D("Sample Diff (NuMI)","Sample Diff from RO to NuMI Trigger; Sample;",600,-300,300);
-		TH1D* hSampleDiffBetweenROAndEXTTrig = new TH1D("Sample Diff (EXT)","Sample Diff from RO to EXT Trigger; Sample;",600,-300,300);
+		TH1D* hFrameDiffBetweenROAndBNBTrig = new TH1D("Frame DiffRO (BNB)","Frame Diff from RO to BNB Trigger; Frame;",9,-5,5);
+		TH1D* hFrameDiffBetweenROAndNuMITrig = new TH1D("Frame DiffRO (NuMI)","Frame Diff from RO to NuMI Trigger; Frame;",9,-5,5);
+		TH1D* hFrameDiffBetweenROAndEXTTrig = new TH1D("Frame DiffRO (EXT)","Frame Diff from RO to EXT Trigger; Frame;",9,-5,5);
+		TH1D* hSampleDiffBetweenROAndBNBTrig = new TH1D("Sample DiffRO (BNB)","Sample Diff from RO to BNB Trigger; Sample;",19,-10,10);
+		TH1D* hSampleDiffBetweenROAndNuMITrig = new TH1D("Sample DiffRO (NuMI)","Sample Diff from RO to NuMI Trigger; Sample;",600,-300,300);
+		TH1D* hSampleDiffBetweenROAndEXTTrig = new TH1D("Sample DiffRO (EXT)","Sample Diff from RO to EXT Trigger; Sample;",600,-300,300);
 		TH1D* hSampleDiffBetweenRWMAndBNBTrig = new TH1D("","Sample Difference from BNB to RWM; Samples;",32,352,384);
 		TH1D* hFrameDiffBetweenRWMAndBNBTrig = new TH1D("Frame Difference","Frame Difference from BNB to RWM;Frames;",9,-5,5);
 		TH1D* hTimeDiffBetweenRWMAndBNBTrig = new TH1D("", "Time Difference from BNB to RWM; #mus",32,5.5,6);
@@ -111,15 +111,15 @@ bool makePlots(int rnum){
 
 		TH1D* hCrateByCrateCompression = new TH1D("", "Crate-by-crate Compression; Crate Number; Compression Factor",9,0,9);
 		TH1D* hMeanCompression = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
-		TH1D* hMeanCompression_c1 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
-		TH1D* hMeanCompression_c2 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
-		TH1D* hMeanCompression_c3 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
-		TH1D* hMeanCompression_c4 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
-		TH1D* hMeanCompression_c5 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
-		TH1D* hMeanCompression_c6 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
-		TH1D* hMeanCompression_c7 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
-		TH1D* hMeanCompression_c8 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
-		TH1D* hMeanCompression_c9 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+		TH1D* hMeanCompression_c1 = new TH1D("C1", "Mean Compression; Compression Factor",100,3,6);
+		TH1D* hMeanCompression_c2 = new TH1D("C2", "Mean Compression; Compression Factor",100,3,6);
+		TH1D* hMeanCompression_c3 = new TH1D("C3", "Mean Compression; Compression Factor",100,3,6);
+		TH1D* hMeanCompression_c4 = new TH1D("C4", "Mean Compression; Compression Factor",100,3,6);
+		TH1D* hMeanCompression_c5 = new TH1D("C5", "Mean Compression; Compression Factor",100,3,6);
+		TH1D* hMeanCompression_c6 = new TH1D("C6", "Mean Compression; Compression Factor",100,3,6);
+		TH1D* hMeanCompression_c7 = new TH1D("C7", "Mean Compression; Compression Factor",100,3,6);
+		TH1D* hMeanCompression_c8 = new TH1D("C8", "Mean Compression; Compression Factor",100,3,6);
+		TH1D* hMeanCompression_c9 = new TH1D("C9", "Mean Compression; Compression Factor",100,3,6);
 
 		TH1D* hEventByEventCompression = new TH1D("", "Event-by-event Compression; Event Number; Compression Factor",500,0,500);
 
@@ -710,7 +710,7 @@ bool makePlots(int rnum){
 	t_timefuncs->SetBranchAddress("cbc_09",&cbc_09);	t_timefuncs->SetBranchAddress("cbc_09err",&cbc_09err);
 	t_timefuncs->SetBranchAddress("sampleDiffBetweenRWMandBNB",&sampleDiffBetweenRWMandBNB);
 	t_timefuncs->SetBranchAddress("meanCompression",&meanCompression);
-	t_timefuncs->SetBranchAddress("meanCompression_c1", &meanCompression_c1);	
+	t_timefuncs->SetBranchAddress("meanCompression_c1", &meanCompression_c1);
 	t_timefuncs->SetBranchAddress("meanCompression_c2", &meanCompression_c2);
 	t_timefuncs->SetBranchAddress("meanCompression_c3", &meanCompression_c3);
 	t_timefuncs->SetBranchAddress("meanCompression_c4", &meanCompression_c4);
