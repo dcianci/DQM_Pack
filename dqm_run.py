@@ -53,7 +53,9 @@ while notdoneyet:
 		filepath = re.split(':|\(',firstfile_loc)[1]+'/'
 
 		for File in filenames.splitlines():
-			outf.write(str(filepath+File+"\n"))
+			#outf.write(str(filepath+File+"\n"))
+			outf.write(str(File+"\n"))
+			os.system("ifdh cp "+str(filepath+File)+" paths/.")
 		outf.close()
 
 
@@ -62,6 +64,7 @@ while notdoneyet:
 		if os.path.isfile("plots/plots_"+str(thisrun)+"/") == False:
 			os.mkdir("plots/plots_"+str(thisrun))
 	os.system("./swizzlePlots %i"%(thisrun))
+	os.system("rm -f paths/*.root")
 
 	for rn in range(1,runbuffer+1):
 		cmd1 = 'samweb count-files "file_name like daq_hist_%%.root  and run_number = %s"' %str(thisrun+rn)

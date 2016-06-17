@@ -134,7 +134,7 @@ bool makePlots(int rnum){
 				std::cout << "Path: " << i << "/" << N_FILES << std::endl;
 
 			if(f_daq) f_daq->Close();
-			f_daq = new TFile(paths[i].c_str());
+			f_daq = new TFile(("paths/"+paths[i]).c_str());
 			t_tree = (TTree*)(f_daq->Get("Debug/tMyTree"));
 			std::cout << "Loaded file. Setting branches." << std::endl;
 
