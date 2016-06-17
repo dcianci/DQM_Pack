@@ -17,7 +17,7 @@ bool makePlots(int bottom, int top){
 	TH1D * hCBC_08 = new TH1D("Compression","Crate 8 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
 	TH1D * hCBC_09 = new TH1D("Compression","Crate 9 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
 	TH2D * hSampleDiffRWMandBNB = new TH2D("Sample Difference","Sample Difference from BNB to RWM; Run Number; Frames",(top - bottom),bottom,top,32,352,384);
-	TH2D * hMeanCompression = new TH2D("Compression","Mean Compression; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression = new TH2D("Compression","Total Event Compression Factor; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
 
 
 	TFile* f = new TFile("dqm_status.root","READ");
@@ -37,7 +37,7 @@ bool makePlots(int bottom, int top){
 	float cbc_01, cbc_02, cbc_03, cbc_04, cbc_05, cbc_06, cbc_07, cbc_08, cbc_09;
 	float cbc_01err, cbc_02err, cbc_03err, cbc_04err, cbc_05err, cbc_06err, cbc_07err, cbc_08err, cbc_09err;
 	TH1D *sampleDiffBetweenRWMandBNB = new TH1D("Frame Difference","Frame Difference from BNB to RWM;Frames;",32,352,384);
-	TH1D *meanCompression = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+	TH1D *meanCompression = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
 
 	dt->SetBranchAddress("run_number",&run_number);
 	dt->SetBranchAddress("cbc_01",&cbc_01);	dt->SetBranchAddress("cbc_01err",&cbc_01err);

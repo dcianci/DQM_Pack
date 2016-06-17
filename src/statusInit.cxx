@@ -13,6 +13,15 @@ bool stInit(){
 	float cbc_01err, cbc_02err, cbc_03err, cbc_04err, cbc_05err, cbc_06err, cbc_07err, cbc_08err, cbc_09err;
 	TH1D *sampleDiffBetweenRWMandBNB = new TH1D("Frame Difference","Frame Difference from BNB to RWM;Frames;",32,352,384);
 	TH1D *meanCompression = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+	TH1D* meanCompression_c1 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+	TH1D* meanCompression_c2 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+	TH1D* meanCompression_c3 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+	TH1D* meanCompression_c4 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+	TH1D* meanCompression_c5 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+	TH1D* meanCompression_c6 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+	TH1D* meanCompression_c7 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+	TH1D* meanCompression_c8 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+	TH1D* meanCompression_c9 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
 
 	dt->Branch("run_number",&run_number);
 	dt->Branch("cbc_01",&cbc_01);	dt->Branch("cbc_01err",&cbc_01err);
@@ -26,6 +35,15 @@ bool stInit(){
 	dt->Branch("cbc_09",&cbc_09);	dt->Branch("cbc_09err",&cbc_09err);
 	dt->Branch("sampleDiffBetweenRWMandBNB",&sampleDiffBetweenRWMandBNB);
 	dt->Branch("meanCompression",&meanCompression);
+	dt->SetBranchAddress("meanCompression_c1", &meanCompression_c1);
+	dt->SetBranchAddress("meanCompression_c2", &meanCompression_c2);
+	dt->SetBranchAddress("meanCompression_c3", &meanCompression_c3);
+	dt->SetBranchAddress("meanCompression_c4", &meanCompression_c4);
+	dt->SetBranchAddress("meanCompression_c5", &meanCompression_c5);
+	dt->SetBranchAddress("meanCompression_c6", &meanCompression_c6);
+	dt->SetBranchAddress("meanCompression_c7", &meanCompression_c7);
+	dt->SetBranchAddress("meanCompression_c8", &meanCompression_c8);
+	dt->SetBranchAddress("meanCompression_c9", &meanCompression_c9);
 
 	st->Write();
 	dt->Write();

@@ -20,6 +20,7 @@ int run_number;
 float cbc_01, cbc_02, cbc_03, cbc_04, cbc_05, cbc_06, cbc_07, cbc_08, cbc_09;
 float cbc_01err, cbc_02err, cbc_03err, cbc_04err, cbc_05err, cbc_06err, cbc_07err, cbc_08err, cbc_09err;
 TH1D *sampleDiffBetweenRWMandBNB, *meanCompression;
+TH1D *meanCompression_c1, *meanCompression_c2, *meanCompression_c3, *meanCompression_c4, *meanCompression_c5, *meanCompression_c6, *meanCompression_c7, *meanCompression_c8, *meanCompression_c9;
 TH1D* hCBC_01 = new TH1D("", "",100,0,10); TH1D* hCBC_02 = new TH1D("", "",100,0,10); TH1D* hCBC_03 = new TH1D("", "",100,0,10);
 TH1D* hCBC_04 = new TH1D("", "",100,0,10); TH1D* hCBC_05 = new TH1D("", "",100,0,10); TH1D* hCBC_06 = new TH1D("", "",100,0,10);
 TH1D* hCBC_07 = new TH1D("", "",100,0,10); TH1D* hCBC_08 = new TH1D("", "",100,0,10); TH1D* hCBC_09 = new TH1D("", "",100,0,10);
@@ -60,25 +61,19 @@ bool makePlots(int rnum){
 		double lastTimeBNB = -1.;
 		double lastTimeNuMI = -1.;
 		double lastTimeEXT = -1.;
-		double lastTimePMTBeam = -1.;
-		double lastTimePMTCosmic = -1.;
 
 		double firstEventTime = -1; double finalEventTime = -1;
 		double firstEventTimeBNB = -1; double finalEventTimeBNB = -1;
 		double firstEventTimeNuMI = -1; double finalEventTimeNuMI = -1;
 		double firstEventTimeEXT = -1; double finalEventTimeEXT = -1;
-		double firstEventTimePMTBeam = -1; double finalEventTimePMTBeam = -1;
-		double firstEventTimePMTCosmic = -1; double finalEventTimePMTCosmic = -1;
 
-		double averageTrigRate, averageTrigRateBNB, averageTrigRateNuMI, averageTrigRateEXT, averageTrigRatePMTBeam, averageTrigRatePMTCosmic;
+		double averageTrigRate, averageTrigRateBNB, averageTrigRateNuMI, averageTrigRateEXT;
 		int nBNB = 0;
 		int nNuMI = 0;
 		int nEXT = 0;
-		int nPMTBeam = 0;
-		int nPMTCosmic = 0;
 
 		double triggerTime, RO_RWMtriggerTime, PMT_waveform_times[400];
-		int triggerBitBNB, triggerBitNuMI, triggerBitEXT, triggerBitPMTBeam, triggerBitPMTCosmic,
+		int triggerBitBNB, triggerBitNuMI, triggerBitEXT,
 			triggerFrame, triggerSample, FEM5triggerFrame, FEM5triggerSample, FEM6triggerFrame, FEM6triggerSample,
 			RO_BNBtriggerFrame, RO_BNBtriggerSample, RO_RWMtriggerFrame, RO_RWMtriggerSample, RO_NuMItriggerFrame, RO_NuMItriggerSample, RO_EXTtriggerFrame, RO_EXTtriggerSample,
 			TPC1triggerFrame, TPC2triggerFrame, TPC3triggerFrame, TPC4triggerFrame, TPC5triggerFrame, TPC6triggerFrame, TPC7triggerFrame, TPC8triggerFrame, TPC9triggerFrame, TPC1triggerSample, TPC2triggerSample, TPC3triggerSample, TPC4triggerSample, TPC5triggerSample, TPC6triggerSample, TPC7triggerSample, TPC8triggerSample, TPC9triggerSample,
@@ -89,14 +84,10 @@ bool makePlots(int rnum){
 		TH1D* hDeltaTBetweenTriggersBNB = new TH1D("Time between triggers (BNB)","Time between triggers (BNB)",100,1e-2,1);
 		TH1D* hDeltaTBetweenTriggersNuMI = new TH1D("Time between triggers (NuMI)","Time between triggers (NuMI)",100,1e-2,1);
 		TH1D* hDeltaTBetweenTriggersEXT = new TH1D("Time between triggers (EXT)","Time between triggers (EXT)",100,1e-2,1);
-		TH1D* hDeltaTBetweenTriggersPMTBeam = new TH1D("Time between triggers (PMT Beam)","Time between triggers (PMT Beam)",100,1e-3,100);
-		TH1D* hDeltaTBetweenTriggersPMTCosmic = new TH1D("Time between triggers (PMT Cosmic)","Time between triggers (PMT Cosmic)",100,1e-2,1);
 		hDeltaTBetweenTriggers->SetTitle("time between triggers;time / s; events");
 		hDeltaTBetweenTriggersBNB->SetTitle("(BNB) time between triggers;time / s; events");
 		hDeltaTBetweenTriggersNuMI->SetTitle("(NuMI) time between triggers;time / s; events");
 		hDeltaTBetweenTriggersEXT->SetTitle("(EXT) time between triggers;time / s; events");
-		hDeltaTBetweenTriggersPMTBeam->SetTitle("(PMT beam) time between triggers;time / s; events");
-		hDeltaTBetweenTriggersPMTCosmic->SetTitle("(PMT cosmic) time between triggers;time / s; events");
 
 		TH1D* hFrameDiff = new TH1D("Frame Difference", "Frame Difference; Frame;", 9,-5,5);
 		TH1D* hSampleDiff = new TH1D("Sample Difference", "Sample Difference; Sample;", 9, -5, 5);
@@ -120,6 +111,16 @@ bool makePlots(int rnum){
 
 		TH1D* hCrateByCrateCompression = new TH1D("", "Crate-by-crate Compression; Crate Number; Compression Factor",9,0,9);
 		TH1D* hMeanCompression = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+		TH1D* hMeanCompression_c1 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+		TH1D* hMeanCompression_c2 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+		TH1D* hMeanCompression_c3 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+		TH1D* hMeanCompression_c4 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+		TH1D* hMeanCompression_c5 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+		TH1D* hMeanCompression_c6 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+		TH1D* hMeanCompression_c7 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+		TH1D* hMeanCompression_c8 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+		TH1D* hMeanCompression_c9 = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
+
 		TH1D* hEventByEventCompression = new TH1D("", "Event-by-event Compression; Event Number; Compression Factor",500,0,500);
 
 		int ADCwordsEvent,NumWordsEvent;
@@ -140,8 +141,6 @@ bool makePlots(int rnum){
 			t_tree->SetBranchAddress("triggerBitBNB", &triggerBitBNB);
 			t_tree->SetBranchAddress("triggerBitNuMI", &triggerBitNuMI);
 			t_tree->SetBranchAddress("triggerBitEXT", &triggerBitEXT);
-			t_tree->SetBranchAddress("triggerBitPMTBeam", &triggerBitPMTBeam);
-			t_tree->SetBranchAddress("triggerBitPMTCosmic", &triggerBitPMTCosmic);
 			t_tree->SetBranchAddress("triggerFrame",&triggerFrame);
 			t_tree->SetBranchAddress("triggerSample",&triggerSample);
 			t_tree->SetBranchAddress("FEM5triggerFrame",&FEM5triggerFrame);
@@ -221,16 +220,6 @@ bool makePlots(int rnum){
 						double timeDiffEXT = triggerTime/1e6 - lastTimeEXT;
 						hDeltaTBetweenTriggersEXT->Fill(timeDiffEXT);
 					}
-					if (triggerBitPMTBeam && lastTimePMTBeam > 0){
-						nPMTBeam+=1;
-						double timeDiffPMTBeam = triggerTime/1e6 - lastTimePMTBeam;
-						hDeltaTBetweenTriggersPMTBeam->Fill(timeDiffPMTBeam);
-					}
-					if (triggerBitPMTCosmic && lastTimePMTCosmic > 0){
-						nPMTCosmic+=1;
-						double timeDiffPMTCosmic = triggerTime/1e6 - lastTimePMTCosmic;
-						hDeltaTBetweenTriggersPMTCosmic->Fill(timeDiffPMTCosmic);
-					}
 				}
 
 				lastFrame = triggerFrame;
@@ -248,14 +237,6 @@ bool makePlots(int rnum){
 					lastTimeEXT = triggerTime/1e6;
 					if(nEXT == 0) nEXT += 1;
 				}
-				if (triggerBitPMTBeam){
-					lastTimePMTBeam = triggerTime/1e6;
-					if(nPMTBeam == 0) nPMTBeam += 1;
-				}
-				if (triggerBitPMTCosmic){
-					lastTimePMTCosmic = triggerTime/1e6;
-					if(nPMTCosmic == 0) nPMTCosmic += 1;
-				}
 
 				// Now, we've gotta find if this is the last or first event in the run, which isn't trivial since these files aren't stored in any kind of sensical order
 				if(lastTime > finalEventTime)
@@ -266,10 +247,6 @@ bool makePlots(int rnum){
 					finalEventTimeNuMI = lastTime;
 				if(triggerBitEXT && (lastTime > finalEventTimeEXT))
 					finalEventTimeEXT = lastTime;
-				if(triggerBitPMTBeam && (lastTime > finalEventTimePMTBeam))
-					finalEventTimePMTBeam = lastTime;
-				if(triggerBitPMTCosmic && (lastTime > finalEventTimePMTCosmic))
-					finalEventTimePMTCosmic = lastTime;
 
 				if(firstEventTime < 0 || lastTime < firstEventTime)
 					firstEventTime = lastTime;
@@ -279,10 +256,6 @@ bool makePlots(int rnum){
 					firstEventTimeNuMI = lastTimeNuMI;
 				if(triggerBitEXT && (firstEventTimeEXT < 0 || lastTime < firstEventTimeEXT))
 					firstEventTimeEXT = lastTimeEXT;
-				if(triggerBitPMTBeam && (firstEventTimePMTBeam < 0 || lastTime < firstEventTimePMTBeam))
-					firstEventTimePMTBeam = lastTimePMTBeam;
-				if(triggerBitPMTCosmic && (firstEventTimePMTCosmic < 0 || lastTime < firstEventTimePMTCosmic))
-					firstEventTimePMTCosmic = lastTimePMTCosmic;
 
 				int _triggerFrame = triggerFrame;
 				int _triggerSample = triggerSample / 32;
@@ -452,6 +425,15 @@ bool makePlots(int rnum){
 				NumWordsEvent += NumWords_crate9;
 				if (NumWordsEvent){
 					hMeanCompression->Fill(ADCwordsEvent / float(NumWordsEvent));
+					hMeanCompression_c1->Fill(ADCwords_crate1 / float(NumWords_crate1));
+					hMeanCompression_c2->Fill(ADCwords_crate2 / float(NumWords_crate2));
+					hMeanCompression_c3->Fill(ADCwords_crate3 / float(NumWords_crate3));
+					hMeanCompression_c4->Fill(ADCwords_crate4 / float(NumWords_crate4));
+					hMeanCompression_c5->Fill(ADCwords_crate5 / float(NumWords_crate5));
+					hMeanCompression_c6->Fill(ADCwords_crate6 / float(NumWords_crate6));
+					hMeanCompression_c7->Fill(ADCwords_crate7 / float(NumWords_crate7));
+					hMeanCompression_c8->Fill(ADCwords_crate8 / float(NumWords_crate8));
+					hMeanCompression_c9->Fill(ADCwords_crate9 / float(NumWords_crate9));
 					hEventByEventCompression->SetBinContent(j,ADCwordsEvent / float(NumWordsEvent));
 				}
 				hCBC_01->Fill(ADCwords_crate1/float(NumWords_crate1));
@@ -518,33 +500,20 @@ bool makePlots(int rnum){
 			averageTrigRateEXT = nEXT / (finalEventTimeEXT - firstEventTimeEXT);
 		else
 			averageTrigRateEXT = 0;
-		if (nPMTBeam)
-			averageTrigRatePMTBeam = nPMTBeam / (finalEventTimePMTBeam - firstEventTimePMTBeam);
-		else
-			averageTrigRatePMTBeam = 0;
-		if (nPMTCosmic && (finalEventTimePMTCosmic - firstEventTimePMTCosmic))
-			averageTrigRatePMTCosmic = nPMTCosmic / (finalEventTimePMTCosmic - firstEventTimePMTCosmic);
-		else
-			averageTrigRatePMTCosmic = 0;
 
+		logger << "Rates: total, BNB, NuMI, EXT\n";
+		logger << averageTrigRate << ", " << averageTrigRateBNB << ", " << averageTrigRateNuMI << ", " << averageTrigRateEXT << "\n";
+		logger << "Diff = " << (averageTrigRate - averageTrigRateBNB - averageTrigRateNuMI - averageTrigRateEXT) << "\n";
 
-		logger << "Rates: total, BNB, NuMI, EXT, PMTBeam, PMTCosmic\n";
-		logger << averageTrigRate << ", " << averageTrigRateBNB << ", " << averageTrigRateNuMI << ", " << averageTrigRateEXT << ", " << averageTrigRatePMTBeam << ", " << averageTrigRatePMTCosmic << "\n";
-		logger << "Diff = " << (averageTrigRate - averageTrigRateBNB - averageTrigRateNuMI - averageTrigRateEXT - averageTrigRatePMTBeam - averageTrigRatePMTCosmic) << "\n";
-
-		TH1D * hTriggerRates = new TH1D("","Trigger Rates; Trigger Type; Rate (Hz)",6,0,6);
+		TH1D * hTriggerRates = new TH1D("","Average Trigger Rates; Trigger Type; Rate (Hz)",4,0,4);
 		hTriggerRates->GetXaxis()->SetBinLabel(1, "BNB");
 		hTriggerRates->GetXaxis()->SetBinLabel(2, "NuMI");
 		hTriggerRates->GetXaxis()->SetBinLabel(3, "EXT");
-		hTriggerRates->GetXaxis()->SetBinLabel(4, "PMT Beam");
-		hTriggerRates->GetXaxis()->SetBinLabel(5, "PMT Cosmic");
-		hTriggerRates->GetXaxis()->SetBinLabel(6, "TOTAL");
+		hTriggerRates->GetXaxis()->SetBinLabel(4, "TOTAL");
 		hTriggerRates->SetBinContent(1, averageTrigRateBNB);
 		hTriggerRates->SetBinContent(2, averageTrigRateNuMI);
 		hTriggerRates->SetBinContent(3, averageTrigRateEXT);
-		hTriggerRates->SetBinContent(4, averageTrigRatePMTBeam);
-		hTriggerRates->SetBinContent(5, averageTrigRatePMTCosmic);
-		hTriggerRates->SetBinContent(6, averageTrigRate);
+		hTriggerRates->SetBinContent(4, averageTrigRate);
 		hTriggerRates->Draw();
 		if (save)
 			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/triggerRates"+to_string(rnum)+".eps").c_str());
@@ -571,14 +540,6 @@ bool makePlots(int rnum){
 		hDeltaTBetweenTriggersEXT->Draw();
 		if (save)
 			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/dTBetweenTriggersEXT"+to_string(rnum)+".eps").c_str());
-
-		hDeltaTBetweenTriggersPMTBeam->Draw();
-		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/dTBetweenTriggersPMTBeam"+to_string(rnum)+".eps").c_str());
-
-		hDeltaTBetweenTriggersPMTCosmic->Draw();
-		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/dTBetweenTriggersPMTCosmic"+to_string(rnum)+".eps").c_str());
 
 		canv->SetLogy(false);
 
@@ -617,7 +578,8 @@ bool makePlots(int rnum){
 		if (save)
 			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/BNBTrigToRWMTimeDiff"+to_string(rnum)+".eps").c_str());
 
-		gStyle->SetOptStat(0000);
+		gStyle->SetOptStat("meou");
+		hTriggerSampleValue->GetXaxis()->SetLimits(-10,102410);
 		hTriggerSampleValue->Draw();
 		if (save)
 			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/TriggerSampleValue"+to_string(rnum)+".eps").c_str());
@@ -697,6 +659,16 @@ bool makePlots(int rnum){
 		gStyle->SetOptStat("men");
 		hMeanCompression->Draw();
 		meanCompression = hMeanCompression;
+		meanCompression_c1 = hMeanCompression_c1;
+		meanCompression_c2 = hMeanCompression_c2;
+		meanCompression_c3 = hMeanCompression_c3;
+		meanCompression_c4 = hMeanCompression_c4;
+		meanCompression_c5 = hMeanCompression_c5;
+		meanCompression_c6 = hMeanCompression_c6;
+		meanCompression_c7 = hMeanCompression_c7;
+		meanCompression_c8 = hMeanCompression_c8;
+		meanCompression_c9 = hMeanCompression_c9;
+
 		if (save)
 			if (NumWordsEvent)
 				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/MeanCompression"+to_string(rnum)+".eps").c_str());
@@ -738,7 +710,15 @@ bool makePlots(int rnum){
 	t_timefuncs->SetBranchAddress("cbc_09",&cbc_09);	t_timefuncs->SetBranchAddress("cbc_09err",&cbc_09err);
 	t_timefuncs->SetBranchAddress("sampleDiffBetweenRWMandBNB",&sampleDiffBetweenRWMandBNB);
 	t_timefuncs->SetBranchAddress("meanCompression",&meanCompression);
-
+	t_timefuncs->SetBranchAddress("meanCompression_c1", &meanCompression_c1);	
+	t_timefuncs->SetBranchAddress("meanCompression_c2", &meanCompression_c2);
+	t_timefuncs->SetBranchAddress("meanCompression_c3", &meanCompression_c3);
+	t_timefuncs->SetBranchAddress("meanCompression_c4", &meanCompression_c4);
+	t_timefuncs->SetBranchAddress("meanCompression_c5", &meanCompression_c5);
+	t_timefuncs->SetBranchAddress("meanCompression_c6", &meanCompression_c6);
+	t_timefuncs->SetBranchAddress("meanCompression_c7", &meanCompression_c7);
+	t_timefuncs->SetBranchAddress("meanCompression_c8", &meanCompression_c8);
+	t_timefuncs->SetBranchAddress("meanCompression_c9", &meanCompression_c9);
 	if(N_FILES)
 		t_timefuncs->Fill();
 
