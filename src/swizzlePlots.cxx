@@ -136,6 +136,7 @@ bool makePlots(int rnum){
 			if(f_daq) f_daq->Close();
 			f_daq = new TFile(paths[i].c_str());
 			t_tree = (TTree*)(f_daq->Get("Debug/tMyTree"));
+			std::cout << "Loaded file. Setting branches." << std::endl;
 
 			t_tree->SetBranchAddress("triggerTime", &triggerTime);
 			t_tree->SetBranchAddress("triggerBitBNB", &triggerBitBNB);
@@ -196,6 +197,7 @@ bool makePlots(int rnum){
 			t_tree->SetBranchAddress("N_PMT_waveforms",&N_PMT_waveforms);
 			t_tree->SetBranchAddress("PMT_waveform_times",PMT_waveform_times);
 
+			std::cout << "Looping through entries" << std::endl;
 			for(int j = 0; j < t_tree->GetEntries(); j++){
 				t_tree->GetEntry(j);
 
