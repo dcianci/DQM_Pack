@@ -54,7 +54,7 @@ while notdoneyet:
 
 		for File in filenames.splitlines():
 			#outf.write(str(filepath+File+"\n"))
-			outf.write(str(File+"\n"))
+			outf.write(str("paths/"+File+"\n"))
 			os.system("ifdh cp "+str(filepath+File)+" paths/.")
 		outf.close()
 
