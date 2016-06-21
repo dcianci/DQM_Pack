@@ -8,17 +8,32 @@ bool makePlots(int bottom, int top){
 	int N_RUNS = 0;
 	TH1D * hEPR = new TH1D("Events","Events Per Run; Run Number; Number of Events",(top - bottom),bottom,top);
 	TH1D * hCBC_01 = new TH1D("Compression","Crate by Crate Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
-	TH1D * hCBC_02 = new TH1D("Compression","Crate 2 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
-	TH1D * hCBC_03 = new TH1D("Compression","Crate 3 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
-	TH1D * hCBC_04 = new TH1D("Compression","Crate 4 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
-	TH1D * hCBC_05 = new TH1D("Compression","Crate 5 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
-	TH1D * hCBC_06 = new TH1D("Compression","Crate 6 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
-	TH1D * hCBC_07 = new TH1D("Compression","Crate 7 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
-	TH1D * hCBC_08 = new TH1D("Compression","Crate 8 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
-	TH1D * hCBC_09 = new TH1D("Compression","Crate 9 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
+	TH1D * hCBC_02 = new TH1D("C2","Crate 2 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
+	TH1D * hCBC_03 = new TH1D("C3","Crate 3 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
+	TH1D * hCBC_04 = new TH1D("C4","Crate 4 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
+	TH1D * hCBC_05 = new TH1D("C5","Crate 5 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
+	TH1D * hCBC_06 = new TH1D("C6","Crate 6 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
+	TH1D * hCBC_07 = new TH1D("C7","Crate 7 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
+	TH1D * hCBC_08 = new TH1D("C8","Crate 8 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
+	TH1D * hCBC_09 = new TH1D("C9","Crate 9 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
 	TH2D * hSampleDiffRWMandBNB = new TH2D("Sample Difference","Sample Difference from BNB to RWM; Run Number; Frames",(top - bottom),bottom,top,32,352,384);
-	TH2D * hMeanCompression = new TH2D("Compression","Total Event Compression Factor; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression = new TH2D("CMean","Total Event Compression Factor; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression_01 = new TH2D("CMean1","Event Compression Factors Crate 1; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression_02 = new TH2D("CMean2","Event Compression Factors Crate 2; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression_03 = new TH2D("CMean3","Event Compression Factors Crate 3; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression_04 = new TH2D("CMean4","Event Compression Factors Crate 4; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression_05 = new TH2D("CMean5","Event Compression Factors Crate 5; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression_06 = new TH2D("CMean6","Event Compression Factors Crate 6; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression_07 = new TH2D("CMean7","Event Compression Factors Crate 7; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression_08 = new TH2D("CMean8","Event Compression Factors Crate 8; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression_09 = new TH2D("CMean9","Event Compression Factors Crate 9; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
 
+	// For events per run, we're either doing it in bins of 1k or 100 depending on how many events we're going over.
+	int eprBins, eprLim;
+	if(top-bottom < 1500) eprLim = 100;
+	else eprLim = 1000;
+	eprBins = ceil(float(top-bottom)/eprLim);
+	TH2d * hEventsPerRun = new TH2D("EPR","Events Per Run; Events Per Run; Run",(eprBins),floor(float(Bottom/eprLim)),ceil(float(Top,eprLim)),500,0,500000.)
 
 	TFile* f = new TFile("dqm_status.root","READ");
 	TNtuple* st = (TNtuple*)(f->Get("status"));
@@ -37,7 +52,15 @@ bool makePlots(int bottom, int top){
 	float cbc_01, cbc_02, cbc_03, cbc_04, cbc_05, cbc_06, cbc_07, cbc_08, cbc_09;
 	float cbc_01err, cbc_02err, cbc_03err, cbc_04err, cbc_05err, cbc_06err, cbc_07err, cbc_08err, cbc_09err;
 	TH1D *sampleDiffBetweenRWMandBNB = new TH1D("Frame Difference","Frame Difference from BNB to RWM;Frames;",32,352,384);
-	TH1D *meanCompression = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
+	TH1D *meanCompression_c1 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
+	TH1D *meanCompression_c2 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
+	TH1D *meanCompression_c3 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
+	TH1D *meanCompression_c4 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
+	TH1D *meanCompression_c5 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
+	TH1D *meanCompression_c6 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
+	TH1D *meanCompression_c7 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
+	TH1D *meanCompression_c8 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
+	TH1D *meanCompression_c9 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
 
 	dt->SetBranchAddress("run_number",&run_number);
 	dt->SetBranchAddress("cbc_01",&cbc_01);	dt->SetBranchAddress("cbc_01err",&cbc_01err);
@@ -51,6 +74,15 @@ bool makePlots(int bottom, int top){
 	dt->SetBranchAddress("cbc_09",&cbc_09);	dt->SetBranchAddress("cbc_09err",&cbc_09err);
 	dt->SetBranchAddress("sampleDiffBetweenRWMandBNB",&sampleDiffBetweenRWMandBNB);
 	dt->SetBranchAddress("meanCompression",&meanCompression);
+	dt->SetBranchAddress("meanCompression_c1", &meanCompression_c1);
+	dt->SetBranchAddress("meanCompression_c2", &meanCompression_c2);
+	dt->SetBranchAddress("meanCompression_c3", &meanCompression_c3);
+	dt->SetBranchAddress("meanCompression_c4", &meanCompression_c4);
+	dt->SetBranchAddress("meanCompression_c5", &meanCompression_c5);
+	dt->SetBranchAddress("meanCompression_c6", &meanCompression_c6);
+	dt->SetBranchAddress("meanCompression_c7", &meanCompression_c7);
+	dt->SetBranchAddress("meanCompression_c8", &meanCompression_c8);
+	dt->SetBranchAddress("meanCompression_c9", &meanCompression_c9);
 
 	// First, let's go through the status ntuple
 	for(int i = 0; i < st->GetEntries(); i++){
@@ -58,8 +90,8 @@ bool makePlots(int bottom, int top){
 		if(r_number < bottom)	continue;
 		if(r_number > top) break;
 
-		// Fill up n_events plots
-		hEPR->SetBinContent(r_number-bottom,n_events);
+		// Now, let's fill the events per run boy
+		hEventsPerRun->SetBinContent(floor(float(run_number-bottom)+1/eprLim),n_events);
 
 		N_RUNS ++;
 		N_FLAGS += n_flags;
@@ -110,6 +142,15 @@ bool makePlots(int bottom, int top){
 		}
 		for(int mc = 1; mc <= 100; mc++){
 			hMeanCompression->SetBinContent(run_number-bottom,mc,meanCompression->GetBinContent(mc));
+			hMeanCompression_01->SetBinContent(run_number-bottom,mc,meanCompression_c1->GetBinContent(mc));
+			hMeanCompression_02->SetBinContent(run_number-bottom,mc,meanCompression_c2->GetBinContent(mc));
+			hMeanCompression_03->SetBinContent(run_number-bottom,mc,meanCompression_c3->GetBinContent(mc));
+			hMeanCompression_04->SetBinContent(run_number-bottom,mc,meanCompression_c4->GetBinContent(mc));
+			hMeanCompression_05->SetBinContent(run_number-bottom,mc,meanCompression_c5->GetBinContent(mc));
+			hMeanCompression_06->SetBinContent(run_number-bottom,mc,meanCompression_c6->GetBinContent(mc));
+			hMeanCompression_07->SetBinContent(run_number-bottom,mc,meanCompression_c7->GetBinContent(mc));
+			hMeanCompression_08->SetBinContent(run_number-bottom,mc,meanCompression_c8->GetBinContent(mc));
+			hMeanCompression_09->SetBinContent(run_number-bottom,mc,meanCompression_c9->GetBinContent(mc));
 		}
 	}
 
@@ -131,7 +172,7 @@ bool makePlots(int bottom, int top){
 	gStyle->SetPadColor(0);
 
 	TCanvas* canv = new TCanvas();
-	hEPR->Draw();
+	hEventsPerRun->Draw("col");
 	canv->SaveAs(("summaries/EventsPerRun_"+to_string(bottom)+"-"+to_string(top)+".eps").c_str());
 
 	hCBC_01->SetMinimum(2);
@@ -238,6 +279,28 @@ bool makePlots(int bottom, int top){
 	canv->SaveAs(("summaries/SampleDiffRWMtoBNB_"+to_string(bottom)+"-"+to_string(top)+".eps").c_str());
 	hMeanCompression->Draw("col");
 	canv->SaveAs(("summaries/MeanCompression_"+to_string(bottom)+"-"+to_string(top)+".eps").c_str());
+
+	canv.Divide(3,3);
+	canv.cd(1);
+	hMeanCompression_01->Draw("col");
+	canv.cd(2);
+	hMeanCompression_02->Draw("col");
+	canv.cd(3);
+	hMeanCompression_03->Draw("col");
+	canv.cd(4);
+	hMeanCompression_04->Draw("col");
+	canv.cd(5);
+	hMeanCompression_05->Draw("col");
+	canv.cd(6);
+	hMeanCompression_06->Draw("col");
+	canv.cd(7);
+	hMeanCompression_07->Draw("col");
+	canv.cd(8);
+	hMeanCompression_08->Draw("col");
+	canv.cd(9);
+	hMeanCompression_09->Draw("col");
+	canv->SaveAs(("summaries/MeanCompressionCrate_"+to_string(bottom)+"-"+to_string(top)+".eps").c_str());
+
 
 	return true;
 }
