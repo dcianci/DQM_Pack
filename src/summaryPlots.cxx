@@ -18,15 +18,15 @@ bool makePlots(int bottom, int top){
 	TH1D * hCBC_09 = new TH1D("C9","Crate 9 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
 	TH2D * hSampleDiffRWMandBNB = new TH2D("Sample Difference","Sample Difference from BNB to RWM; Run Number; Frames",(top - bottom),bottom,top,32,352,384);
 	TH2D * hMeanCompression = new TH2D("CMean","Total Event Compression Factor; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
-	TH2D * hMeanCompression_01 = new TH2D("CMean1","Event Compression Factors Crate 1; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,6);
-	TH2D * hMeanCompression_02 = new TH2D("CMean2","Event Compression Factors Crate 2; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,6);
-	TH2D * hMeanCompression_03 = new TH2D("CMean3","Event Compression Factors Crate 3; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,6);
-	TH2D * hMeanCompression_04 = new TH2D("CMean4","Event Compression Factors Crate 4; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,6);
-	TH2D * hMeanCompression_05 = new TH2D("CMean5","Event Compression Factors Crate 5; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,6);
-	TH2D * hMeanCompression_06 = new TH2D("CMean6","Event Compression Factors Crate 6; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,6);
-	TH2D * hMeanCompression_07 = new TH2D("CMean7","Event Compression Factors Crate 7; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,6);
-	TH2D * hMeanCompression_08 = new TH2D("CMean8","Event Compression Factors Crate 8; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,6);
-	TH2D * hMeanCompression_09 = new TH2D("CMean9","Event Compression Factors Crate 9; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,6);
+	TH2D * hMeanCompression_01 = new TH2D("CMean1","Event Compression Factors Crate 1; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression_02 = new TH2D("CMean2","Event Compression Factors Crate 2; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression_03 = new TH2D("CMean3","Event Compression Factors Crate 3; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression_04 = new TH2D("CMean4","Event Compression Factors Crate 4; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression_05 = new TH2D("CMean5","Event Compression Factors Crate 5; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression_06 = new TH2D("CMean6","Event Compression Factors Crate 6; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression_07 = new TH2D("CMean7","Event Compression Factors Crate 7; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression_08 = new TH2D("CMean8","Event Compression Factors Crate 8; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression_09 = new TH2D("CMean9","Event Compression Factors Crate 9; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
 
 	// For events per run, we're either doing it in bins of 1k or 100 depending on how many events we're going over.
 	int eprBins, eprLim;
@@ -92,7 +92,7 @@ bool makePlots(int bottom, int top){
 		if(r_number > top) break;
 
 		// Now, let's fill the events per run boy
-		hEventsPerRun->Fill(floor(float(run_number)/eprLim),n_events);
+		hEventsPerRun->Fill(float(run_number)/eprLim),n_events);
 
 		N_RUNS ++;
 		N_FLAGS += n_flags;
@@ -100,6 +100,8 @@ bool makePlots(int bottom, int top){
 			std::cout << "Run: " << r_number << " has thrown " << n_flags << " warning flags. Might want to check that out" << std::endl;
 		}
 	}
+	std::cout << hEventsPerRun->GetEntries() << " entries!" << std::endl;
+
 	std::cout << "We just scanned over " << (top - bottom) << " runs, of which " << N_RUNS << " had processed files for me to look at." << std::endl;
 	std::cout << "Oh, and we found " << N_FLAGS << " warnings over that range." << std::endl;
 
