@@ -18,7 +18,7 @@ bool makePlots(int bottom, int top){
 	TH1D * hCBC_09 = new TH1D("C9","Crate 9 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
 	TH2D * hSampleDiffRWMandBNB = new TH2D("Sample Difference","Sample Difference from BNB to RWM; Run Number; Frames",(top - bottom),bottom,top,32,352,384);
 	TH2D * hMeanCompression = new TH2D("CMean","Total Event Compression Factor; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
-	TH2D * hMeanCompression_01 = new TH2D("CMean1","Event Compression Factors Crate 1; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression_01 = new TH2D("CMean1","Event Compression Factors Crate 1; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,6);
 	TH2D * hMeanCompression_02 = new TH2D("CMean2","Event Compression Factors Crate 2; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,6);
 	TH2D * hMeanCompression_03 = new TH2D("CMean3","Event Compression Factors Crate 3; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,6);
 	TH2D * hMeanCompression_04 = new TH2D("CMean4","Event Compression Factors Crate 4; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,6);
@@ -92,7 +92,7 @@ bool makePlots(int bottom, int top){
 		if(r_number > top) break;
 
 		// Now, let's fill the events per run boy
-		hEventsPerRun->SetBinContent(floor(float(run_number-bottom)+1/eprLim),n_events);
+		hEventsPerRun->SetBinContent(floor(float(run_number-bottom)/eprLim)+1,n_events);
 
 		N_RUNS ++;
 		N_FLAGS += n_flags;
