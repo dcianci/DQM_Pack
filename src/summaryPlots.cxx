@@ -33,7 +33,7 @@ bool makePlots(int bottom, int top){
 	if(top-bottom < 1500) eprLim = 100;
 	else eprLim = 1000;
 	eprBins = ceil(float(top-bottom)/eprLim);
-	TH2d * hEventsPerRun = new TH2D("EPR","Events Per Run; Events Per Run; Run",(eprBins),floor(float(Bottom/eprLim)),ceil(float(Top,eprLim)),500,0,500000.)
+	TH2D * hEventsPerRun = new TH2D("EPR","Events Per Run; Events Per Run; Run",(eprBins),floor(float(bottom/eprLim)),ceil(float(top/eprLim)),500,0,500000.);
 
 	TFile* f = new TFile("dqm_status.root","READ");
 	TNtuple* st = (TNtuple*)(f->Get("status"));
@@ -52,6 +52,7 @@ bool makePlots(int bottom, int top){
 	float cbc_01, cbc_02, cbc_03, cbc_04, cbc_05, cbc_06, cbc_07, cbc_08, cbc_09;
 	float cbc_01err, cbc_02err, cbc_03err, cbc_04err, cbc_05err, cbc_06err, cbc_07err, cbc_08err, cbc_09err;
 	TH1D *sampleDiffBetweenRWMandBNB = new TH1D("Frame Difference","Frame Difference from BNB to RWM;Frames;",32,352,384);
+	TH1D *meanCompression = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
 	TH1D *meanCompression_c1 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
 	TH1D *meanCompression_c2 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
 	TH1D *meanCompression_c3 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
@@ -280,24 +281,24 @@ bool makePlots(int bottom, int top){
 	hMeanCompression->Draw("col");
 	canv->SaveAs(("summaries/MeanCompression_"+to_string(bottom)+"-"+to_string(top)+".eps").c_str());
 
-	canv.Divide(3,3);
-	canv.cd(1);
+	canv->Divide(3,3);
+	canv->cd(1);
 	hMeanCompression_01->Draw("col");
-	canv.cd(2);
+	canv->cd(2);
 	hMeanCompression_02->Draw("col");
-	canv.cd(3);
+	canv->cd(3);
 	hMeanCompression_03->Draw("col");
-	canv.cd(4);
+	canv->cd(4);
 	hMeanCompression_04->Draw("col");
-	canv.cd(5);
+	canv->cd(5);
 	hMeanCompression_05->Draw("col");
-	canv.cd(6);
+	canv->cd(6);
 	hMeanCompression_06->Draw("col");
-	canv.cd(7);
+	canv->cd(7);
 	hMeanCompression_07->Draw("col");
-	canv.cd(8);
+	canv->cd(8);
 	hMeanCompression_08->Draw("col");
-	canv.cd(9);
+	canv->cd(9);
 	hMeanCompression_09->Draw("col");
 	canv->SaveAs(("summaries/MeanCompressionCrate_"+to_string(bottom)+"-"+to_string(top)+".eps").c_str());
 
