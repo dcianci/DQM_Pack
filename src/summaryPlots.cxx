@@ -92,7 +92,8 @@ bool makePlots(int bottom, int top){
 		if(r_number > top) break;
 
 		// Now, let's fill the events per run boy
-		hEventsPerRun->Fill(float(run_number)/eprLim),n_events);
+		hEventsPerRun->Fill(float(run_number)/eprLim,n_events);
+		std::cout << float(run_number)/eprLim << " " << n_events << std::endl;
 
 		N_RUNS ++;
 		N_FLAGS += n_flags;
