@@ -92,7 +92,7 @@ bool makePlots(int bottom, int top){
 		if(r_number > top) break;
 
 		// Now, let's fill the events per run boy
-		hEventsPerRun->SetBinContent(floor(float(run_number-bottom)/eprLim)+1,n_events);
+		hEventsPerRun->Fill(floor(float(run_number)/eprLim),n_events);
 
 		N_RUNS ++;
 		N_FLAGS += n_flags;
