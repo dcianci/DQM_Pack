@@ -92,8 +92,7 @@ bool makePlots(int bottom, int top){
 		if(r_number > top) break;
 
 		// Now, let's fill the events per run boy
-		hEventsPerRun->Fill(float(run_number)/eprLim,n_events);
-		std::cout << float(run_number)/eprLim << " " << n_events << std::endl;
+		hEventsPerRun->Fill(float(r_number)/eprLim,n_events);
 
 		N_RUNS ++;
 		N_FLAGS += n_flags;
@@ -101,7 +100,6 @@ bool makePlots(int bottom, int top){
 			std::cout << "Run: " << r_number << " has thrown " << n_flags << " warning flags. Might want to check that out" << std::endl;
 		}
 	}
-	std::cout << hEventsPerRun->GetEntries() << " entries!" << std::endl;
 
 	std::cout << "We just scanned over " << (top - bottom) << " runs, of which " << N_RUNS << " had processed files for me to look at." << std::endl;
 	std::cout << "Oh, and we found " << N_FLAGS << " warnings over that range." << std::endl;
