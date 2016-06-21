@@ -33,7 +33,7 @@ bool makePlots(int bottom, int top){
 	if(top-bottom < 1500) eprLim = 100;
 	else eprLim = 1000;
 	eprBins = ceil(float(top-bottom)/eprLim);
-	TH2D * hEventsPerRun = new TH2D("EPR","Events Per Run; Events Per Run; Run",(eprBins),floor(float(bottom/eprLim)),ceil(float(top/eprLim)),500,0,500000.);
+	TH2D * hEventsPerRun = new TH2D("EPR","Events Per Run; Events Per Run; Run",(eprBins),floor(float(bottom/eprLim)),ceil(float(top/eprLim)),200,0,200000.);
 
 	TFile* f = new TFile("dqm_status.root","READ");
 	TNtuple* st = (TNtuple*)(f->Get("status"));
