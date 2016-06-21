@@ -173,7 +173,6 @@ bool makePlots(int bottom, int top){
 	gStyle->SetPadColor(0);
 
 	TCanvas* canv = new TCanvas();
-	TCanvas* c2 = new TCanvas();
 	hEventsPerRun->Draw("col");
 	canv->SaveAs(("summaries/EventsPerRun_"+to_string(bottom)+"-"+to_string(top)+".eps").c_str());
 
@@ -282,6 +281,7 @@ bool makePlots(int bottom, int top){
 	hMeanCompression->Draw("col");
 	canv->SaveAs(("summaries/MeanCompression_"+to_string(bottom)+"-"+to_string(top)+".eps").c_str());
 
+	TCanvas* c2 = new TCanvas();
 	c2->Divide(3,3);
 	c2->cd(1);
 	hMeanCompression_01->Draw("col");
