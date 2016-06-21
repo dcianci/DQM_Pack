@@ -173,6 +173,7 @@ bool makePlots(int bottom, int top){
 	gStyle->SetPadColor(0);
 
 	TCanvas* canv = new TCanvas();
+	TCanvas* c2 = new TCanvas();
 	hEventsPerRun->Draw("col");
 	canv->SaveAs(("summaries/EventsPerRun_"+to_string(bottom)+"-"+to_string(top)+".eps").c_str());
 
@@ -281,26 +282,26 @@ bool makePlots(int bottom, int top){
 	hMeanCompression->Draw("col");
 	canv->SaveAs(("summaries/MeanCompression_"+to_string(bottom)+"-"+to_string(top)+".eps").c_str());
 
-	canv->Divide(3,3);
-	canv->cd(1);
+	c2->Divide(3,3);
+	c2->cd(1);
 	hMeanCompression_01->Draw("col");
-	canv->cd(2);
+	c2->cd(2);
 	hMeanCompression_02->Draw("col");
-	canv->cd(3);
+	c2->cd(3);
 	hMeanCompression_03->Draw("col");
-	canv->cd(4);
+	c2->cd(4);
 	hMeanCompression_04->Draw("col");
-	canv->cd(5);
+	c2->cd(5);
 	hMeanCompression_05->Draw("col");
-	canv->cd(6);
+	c2->cd(6);
 	hMeanCompression_06->Draw("col");
-	canv->cd(7);
+	c2->cd(7);
 	hMeanCompression_07->Draw("col");
-	canv->cd(8);
+	c2->cd(8);
 	hMeanCompression_08->Draw("col");
-	canv->cd(9);
+	c2->cd(9);
 	hMeanCompression_09->Draw("col");
-	canv->SaveAs(("summaries/MeanCompressionCrate_"+to_string(bottom)+"-"+to_string(top)+".eps").c_str());
+	c2->SaveAs(("summaries/MeanCompressionCrate_"+to_string(bottom)+"-"+to_string(top)+".eps").c_str());
 
 
 	return true;
