@@ -111,15 +111,15 @@ bool makePlots(int rnum){
 
 		TH1D* hCrateByCrateCompression = new TH1D("", "Crate-by-crate Compression; Crate Number; Compression Factor",9,0,9);
 		TH1D* hMeanCompression = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
-		TH1D* hMeanCompression_c1 = new TH1D("C1", "Mean Compression; Compression Factor",100,3,6);
-		TH1D* hMeanCompression_c2 = new TH1D("C2", "Mean Compression; Compression Factor",100,3,6);
-		TH1D* hMeanCompression_c3 = new TH1D("C3", "Mean Compression; Compression Factor",100,3,6);
-		TH1D* hMeanCompression_c4 = new TH1D("C4", "Mean Compression; Compression Factor",100,3,6);
-		TH1D* hMeanCompression_c5 = new TH1D("C5", "Mean Compression; Compression Factor",100,3,6);
-		TH1D* hMeanCompression_c6 = new TH1D("C6", "Mean Compression; Compression Factor",100,3,6);
-		TH1D* hMeanCompression_c7 = new TH1D("C7", "Mean Compression; Compression Factor",100,3,6);
-		TH1D* hMeanCompression_c8 = new TH1D("C8", "Mean Compression; Compression Factor",100,3,6);
-		TH1D* hMeanCompression_c9 = new TH1D("C9", "Mean Compression; Compression Factor",100,3,6);
+		TH1D* hMeanCompression_c1 = new TH1D("C1", "Mean Compression; Compression Factor",100,0,7);
+		TH1D* hMeanCompression_c2 = new TH1D("C2", "Mean Compression; Compression Factor",100,0,7);
+		TH1D* hMeanCompression_c3 = new TH1D("C3", "Mean Compression; Compression Factor",100,0,7);
+		TH1D* hMeanCompression_c4 = new TH1D("C4", "Mean Compression; Compression Factor",100,0,7);
+		TH1D* hMeanCompression_c5 = new TH1D("C5", "Mean Compression; Compression Factor",100,0,7);
+		TH1D* hMeanCompression_c6 = new TH1D("C6", "Mean Compression; Compression Factor",100,0,7);
+		TH1D* hMeanCompression_c7 = new TH1D("C7", "Mean Compression; Compression Factor",100,0,7);
+		TH1D* hMeanCompression_c8 = new TH1D("C8", "Mean Compression; Compression Factor",100,0,7);
+		TH1D* hMeanCompression_c9 = new TH1D("C9", "Mean Compression; Compression Factor",100,0,7);
 
 		TH1D* hEventByEventCompression = new TH1D("", "Event-by-event Compression; Event Number; Compression Factor",500,0,500);
 
@@ -289,6 +289,8 @@ bool makePlots(int rnum){
 					hSampleDiffBNB->Fill(_FEM5triggerSample - _triggerSample);
 					hFrameDiffBetweenROAndBNBTrig->Fill(_triggerFrame - RO_BNBtriggerFrame);
 					hSampleDiffBetweenROAndBNBTrig->Fill(_triggerSample - RO_BNBtriggerSample);
+					std::cout << "SAMPLE: " << _triggerSample << " " << RO_BNBtriggerSample << std::endl;
+					std::cout << "FRAME: " << _triggerFrame << " " << RO_BNBtriggerFrame << std::endl;
 					if (RO_RWMtriggerFrame > 0){
 						hFrameDiffBetweenRWMAndBNBTrig->Fill(RO_RWMtriggerFrame - triggerFrame); //RWM signal
 						hSampleDiffBetweenRWMAndBNBTrig->Fill(RO_RWMtriggerSample - triggerSample); //RWM signali
@@ -489,7 +491,7 @@ bool makePlots(int rnum){
 			logger << "WARNING: lastTime = firstEventTime = " << lastTime << ". Skipping run for now because I don't know what to do. \n";
 			return false;
 		}
-		averageTrigRate = t_tree->GetEntries() / (finalEventTime - firstEventTime);
+		averageTrigRate = (nBNB+nNuMI+nEXT) / (finalEventTime - firstEventTime);
 		if (nBNB)
 			averageTrigRateBNB = nBNB / (finalEventTimeBNB - firstEventTimeBNB);
 		else
@@ -511,7 +513,7 @@ bool makePlots(int rnum){
 		hTriggerRates->GetXaxis()->SetBinLabel(1, "BNB");
 		hTriggerRates->GetXaxis()->SetBinLabel(2, "NuMI");
 		hTriggerRates->GetXaxis()->SetBinLabel(3, "EXT");
-		hTriggerRates->GetXaxis()->SetBinLabel(4, "TOTAL");
+		hTriggerRates->GetXaxis()->SetBinLabel(4, "All");
 		hTriggerRates->SetBinContent(1, averageTrigRateBNB);
 		hTriggerRates->SetBinContent(2, averageTrigRateNuMI);
 		hTriggerRates->SetBinContent(3, averageTrigRateEXT);
@@ -581,7 +583,7 @@ bool makePlots(int rnum){
 			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/BNBTrigToRWMTimeDiff"+to_string(rnum)+".eps").c_str());
 
 		gStyle->SetOptStat("meou");
-		hTriggerSampleValue->GetXaxis()->SetLimits(-10,102410);
+		hTriggerSampleValue->GetXaxis()->SetLimits(-100,102500);
 		hTriggerSampleValue->Draw();
 		if (save)
 			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/TriggerSampleValue"+to_string(rnum)+".eps").c_str());
