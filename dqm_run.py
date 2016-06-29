@@ -7,7 +7,8 @@ from ROOT import *
 import re
 
 # runbuffer is how many blank runs we'll try before accepting that we really are at the end
-runbuffer = 300
+runbuffer = 1000
+nextfullrun = 0
 listout = "pathlist.txt"
 
 if len(sys.argv) == 2:
@@ -31,6 +32,7 @@ for rn in range(0,runbuffer+1):
 	cmd1 = 'samweb count-files "file_name like daq_hist_%%.root  and run_number = %s"' %str(thisrun+rn)
 	nfiles = os.popen(cmd1).read()
 	if int(nfiles) > 0:
+		nextfullrun = thisrun+rn
 		break
 	if rn == runbuffer:
 		print "We're done with runs in this area, I guess."
@@ -66,14 +68,16 @@ while notdoneyet:
 	os.system("./swizzlePlots %i"%(thisrun))
 	os.system("rm -f paths/*.root")
 
-	for rn in range(1,runbuffer+1):
-		cmd1 = 'samweb count-files "file_name like daq_hist_%%.root  and run_number = %s"' %str(thisrun+rn)
-		nfiles = os.popen(cmd1).read()
-		if int(nfiles) > 0:
-			break
-		if rn == runbuffer:
-			notdoneyet = False
-			print "All done, I think"
+	if thisrun >= nextfullrun:
+		for rn in range(1,runbuffer+1):
+			cmd1 = 'samweb count-files "file_name like daq_hist_%%.root  and run_number = %s"' %str(thisrun+rn)
+			nfiles = os.popen(cmd1).read()
+			if int(nfiles) > 0:
+				nextfullrun = thisrun+rn
+				break
+			if rn == runbuffer:
+				notdoneyet = False
+				print "All done, I think"
 
 	#notdoneyet = False
 	thisrun+=1
