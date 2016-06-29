@@ -288,9 +288,7 @@ bool makePlots(int rnum){
 					hFrameDiffBNB->Fill(_FEM5triggerFrame - _triggerFrame);
 					hSampleDiffBNB->Fill(_FEM5triggerSample - _triggerSample);
 					hFrameDiffBetweenROAndBNBTrig->Fill(_triggerFrame - RO_BNBtriggerFrame);
-					hSampleDiffBetweenROAndBNBTrig->Fill(_triggerSample - RO_BNBtriggerSample);
-					std::cout << "SAMPLE: " << _triggerSample << " " << RO_BNBtriggerSample << std::endl;
-					std::cout << "FRAME: " << _triggerFrame << " " << RO_BNBtriggerFrame << std::endl;
+					hSampleDiffBetweenROAndBNBTrig->Fill(_triggerSample - RO_BNBtriggerSample/32);
 					if (RO_RWMtriggerFrame > 0){
 						hFrameDiffBetweenRWMAndBNBTrig->Fill(RO_RWMtriggerFrame - triggerFrame); //RWM signal
 						hSampleDiffBetweenRWMAndBNBTrig->Fill(RO_RWMtriggerSample - triggerSample); //RWM signali
@@ -308,13 +306,13 @@ bool makePlots(int rnum){
 					hFrameDiffNuMI->Fill(_FEM5triggerFrame - _triggerFrame);
 					hSampleDiffNuMI->Fill(_FEM5triggerSample - _triggerSample );
 					hFrameDiffBetweenROAndNuMITrig->Fill(_triggerFrame - RO_NuMItriggerFrame);
-					hSampleDiffBetweenROAndNuMITrig->Fill(_triggerSample - RO_NuMItriggerSample);
+					hSampleDiffBetweenROAndNuMITrig->Fill(_triggerSample - RO_NuMItriggerSample/32);
 				}
 				if (triggerBitEXT){
 					hFrameDiffEXT->Fill(_FEM5triggerFrame - _triggerFrame);
 					hSampleDiffEXT->Fill(_FEM5triggerSample - _triggerSample);
 					hFrameDiffBetweenROAndEXTTrig->Fill(_triggerFrame - RO_EXTtriggerFrame);
-					hSampleDiffBetweenROAndEXTTrig->Fill(_triggerSample - RO_EXTtriggerSample);
+					hSampleDiffBetweenROAndEXTTrig->Fill(_triggerSample - RO_EXTtriggerSample/32);
 				}
 
 				int referenceFrame = _FEM5triggerFrame;

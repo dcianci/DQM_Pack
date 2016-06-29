@@ -18,15 +18,15 @@ bool makePlots(int bottom, int top){
 	TH1D * hCBC_09 = new TH1D("C9","Crate 9 Compression; Run Number; Compression Factor",(top - bottom),bottom,top);
 	TH2D * hSampleDiffRWMandBNB = new TH2D("Sample Difference","Sample Difference from BNB to RWM; Run Number; Frames",(top - bottom),bottom,top,32,352,384);
 	TH2D * hMeanCompression = new TH2D("CMean","Total Event Compression Factor; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
-	TH2D * hMeanCompression_01 = new TH2D("CMean1","Event Compression Factors Crate 1; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
-	TH2D * hMeanCompression_02 = new TH2D("CMean2","Event Compression Factors Crate 2; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
-	TH2D * hMeanCompression_03 = new TH2D("CMean3","Event Compression Factors Crate 3; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
-	TH2D * hMeanCompression_04 = new TH2D("CMean4","Event Compression Factors Crate 4; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
-	TH2D * hMeanCompression_05 = new TH2D("CMean5","Event Compression Factors Crate 5; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
-	TH2D * hMeanCompression_06 = new TH2D("CMean6","Event Compression Factors Crate 6; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
-	TH2D * hMeanCompression_07 = new TH2D("CMean7","Event Compression Factors Crate 7; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
-	TH2D * hMeanCompression_08 = new TH2D("CMean8","Event Compression Factors Crate 8; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
-	TH2D * hMeanCompression_09 = new TH2D("CMean9","Event Compression Factors Crate 9; Run Number; Compression Factor",(top - bottom),bottom,top,100,3,6);
+	TH2D * hMeanCompression_01 = new TH2D("CMean1","Event Compression Factors Crate 1; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,7);
+	TH2D * hMeanCompression_02 = new TH2D("CMean2","Event Compression Factors Crate 2; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,7);
+	TH2D * hMeanCompression_03 = new TH2D("CMean3","Event Compression Factors Crate 3; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,7);
+	TH2D * hMeanCompression_04 = new TH2D("CMean4","Event Compression Factors Crate 4; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,7);
+	TH2D * hMeanCompression_05 = new TH2D("CMean5","Event Compression Factors Crate 5; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,7);
+	TH2D * hMeanCompression_06 = new TH2D("CMean6","Event Compression Factors Crate 6; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,7);
+	TH2D * hMeanCompression_07 = new TH2D("CMean7","Event Compression Factors Crate 7; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,7);
+	TH2D * hMeanCompression_08 = new TH2D("CMean8","Event Compression Factors Crate 8; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,7);
+	TH2D * hMeanCompression_09 = new TH2D("CMean9","Event Compression Factors Crate 9; Run Number; Compression Factor",(top - bottom),bottom,top,100,0,7);
 
 	// For events per run, we're either doing it in bins of 1k or 100 depending on how many events we're going over.
 	int eprBins, eprLim;
@@ -53,15 +53,15 @@ bool makePlots(int bottom, int top){
 	float cbc_01err, cbc_02err, cbc_03err, cbc_04err, cbc_05err, cbc_06err, cbc_07err, cbc_08err, cbc_09err;
 	TH1D *sampleDiffBetweenRWMandBNB = new TH1D("Frame Difference","Frame Difference from BNB to RWM;Frames;",32,352,384);
 	TH1D *meanCompression = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
-	TH1D *meanCompression_c1 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
-	TH1D *meanCompression_c2 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
-	TH1D *meanCompression_c3 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
-	TH1D *meanCompression_c4 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
-	TH1D *meanCompression_c5 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
-	TH1D *meanCompression_c6 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
-	TH1D *meanCompression_c7 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
-	TH1D *meanCompression_c8 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
-	TH1D *meanCompression_c9 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,3,6);
+	TH1D *meanCompression_c1 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,0,7);
+	TH1D *meanCompression_c2 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,0,7);
+	TH1D *meanCompression_c3 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,0,7);
+	TH1D *meanCompression_c4 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,0,7);
+	TH1D *meanCompression_c5 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,0,7);
+	TH1D *meanCompression_c6 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,0,7);
+	TH1D *meanCompression_c7 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,0,7);
+	TH1D *meanCompression_c8 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,0,7);
+	TH1D *meanCompression_c9 = new TH1D("Compression", "Total Event Compression Factor; Compression Factor",100,0,7);
 
 	dt->SetBranchAddress("run_number",&run_number);
 	dt->SetBranchAddress("cbc_01",&cbc_01);	dt->SetBranchAddress("cbc_01err",&cbc_01err);
