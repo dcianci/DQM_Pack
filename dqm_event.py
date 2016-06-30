@@ -33,7 +33,7 @@ if len(files) > 0:
 	for File in filenames.splitlines():
 		#outf.write(str(filepath+File+"\n"))
 		outf.write(str(File+"\n"))
-			os.system("cp "+str(filepath+File)+" paths/.")
+		os.system("cp "+str(filepath+File)+" paths/.")
 	outf.close()
 
 
