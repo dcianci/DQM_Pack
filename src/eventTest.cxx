@@ -91,7 +91,7 @@ bool makePlots(int rnum, int evnum){
 	}
 
 	double toosmall = 0.;
-	double smallest; int ismallest;
+	double smallest; int ismallest = -1;
 	double therighttime = 0.;
 	thisevent = 1;
 
@@ -99,6 +99,7 @@ bool makePlots(int rnum, int evnum){
 	for(int i = 0; i < int(N_FILES); i++){
 
 		for(int f = 0; f < int(N_FILES); f++){
+			if(f == ismallest) continue;
 			if(f == 0){
 				smallest = orderVec[0];
 				ismallest = 0;
