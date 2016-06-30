@@ -146,7 +146,10 @@ bool makePlots(int rnum, int evnum){
 			t_tree->GetEntry(j);
 			if(triggerTime < therighttime) std::cout << "BANGBANGBANG" << std::endl;
 
-			if(thisevent < evnum - 10 || thisevent > evnum + 10) continue;
+			if(thisevent < evnum - 10 || thisevent > evnum + 10) {
+				thisevent++;
+				continue;
+			}
 
 			ADCwordsEvent = ADCwords_crate0;
 			ADCwordsEvent += ADCwords_crate1;
@@ -225,45 +228,9 @@ bool makePlots(int rnum, int evnum){
  	gStyle->SetPalette(1);
  	gStyle->SetCanvasColor(0);
  	gStyle->SetPadColor(0);
-
-	if (NumWords1){
-		cbc_01 = ADCwords1/float(NumWords1);
-		cbc_01err = hCBC_01->GetRMS();
-	}
-	if (NumWords2){
-		cbc_02 = ADCwords2/float(NumWords2);
-		cbc_02err = hCBC_02->GetRMS();
-	}
-	if (NumWords3){
-		cbc_03 = ADCwords3/float(NumWords3);
-		cbc_03err = hCBC_03->GetRMS();
-	}
-	if (NumWords4){
-		cbc_04 = ADCwords4/float(NumWords4);
-		cbc_04err = hCBC_04->GetRMS();
-	}
-	if (NumWords5){
-		cbc_05 = ADCwords5/float(NumWords5);
-		cbc_05err = hCBC_05->GetRMS();
-	}
-	if (NumWords6){
-		cbc_06 = ADCwords6/float(NumWords6);
-		cbc_06err = hCBC_06->GetRMS();
-	}
-	if (NumWords7){
-		cbc_07 = ADCwords7/float(NumWords7);
-		cbc_07err = hCBC_07->GetRMS();
-	}
-	if (NumWords8){
-		cbc_08 = ADCwords8/float(NumWords8);
-		cbc_08err = hCBC_08->GetRMS();
-	}
-	if (NumWords9){
-		cbc_09 = ADCwords9/float(NumWords9);
-		cbc_09err = hCBC_09->GetRMS();
-	}
-
 	gStyle->SetOptStat(0000);
+
+
 	hEventByEventCompression->SetMinimum(0);
 	hEventByEventCompression->SetMaximum(9);
 	hEventByEventCompression->Draw();
