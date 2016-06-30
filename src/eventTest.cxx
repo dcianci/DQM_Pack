@@ -208,6 +208,7 @@ bool makePlots(int rnum, int evnum){
 			NumWords8 += NumWords_crate8;
 			NumWords9 += NumWords_crate9;
 
+			std::cout << "EVENT: " << thisevent << std::endl;
 			thisevent++;
 		}
 	}
