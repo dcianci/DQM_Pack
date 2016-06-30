@@ -100,13 +100,13 @@ bool makePlots(int rnum, int evnum){
 
 		for(int f = 0; f < int(N_FILES); f++){
 			if(f == ismallest) continue;
-			if(f == 0){
+			if(f == 0 || (ismallest == 0 && f == 1)){
 				smallest = orderVec[0];
 				ismallest = 0;
 			}
 			else if(orderVec[f] < smallest && orderVec[f] > toosmall){
-					smallest = orderVec[f];
-					ismallest = f;
+				smallest = orderVec[f];
+				ismallest = f;
 			}
 		}
 		toosmall = smallest;
