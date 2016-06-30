@@ -93,7 +93,7 @@ bool makePlots(int rnum, int evnum){
 	double toosmall = 0.;
 	double smallest; int ismallest;
 	double therighttime = 0.;
-	thisevent = 0;
+	thisevent = 1;
 
 	std::cout << "Starting to loop through everything." << std::endl;
 	for(int i = 0; i < int(N_FILES); i++){
@@ -171,16 +171,16 @@ bool makePlots(int rnum, int evnum){
 			NumWordsEvent += NumWords_crate8;
 			NumWordsEvent += NumWords_crate9;
 			if (NumWordsEvent){
-				hEventByEventCompression->SetBinContent(thisevent,ADCwordsEvent / float(NumWordsEvent));
-				hEventByEventCompression_c1->SetBinContent(thisevent,ADCwords_crate1 / float(NumWords_crate1));
-				hEventByEventCompression_c2->SetBinContent(thisevent,ADCwords_crate2 / float(NumWords_crate2));
-				hEventByEventCompression_c3->SetBinContent(thisevent,ADCwords_crate3 / float(NumWords_crate3));
-				hEventByEventCompression_c4->SetBinContent(thisevent,ADCwords_crate4 / float(NumWords_crate4));
-				hEventByEventCompression_c5->SetBinContent(thisevent,ADCwords_crate5 / float(NumWords_crate5));
-				hEventByEventCompression_c6->SetBinContent(thisevent,ADCwords_crate6 / float(NumWords_crate6));
-				hEventByEventCompression_c7->SetBinContent(thisevent,ADCwords_crate7 / float(NumWords_crate7));
-				hEventByEventCompression_c8->SetBinContent(thisevent,ADCwords_crate8 / float(NumWords_crate8));
-				hEventByEventCompression_c9->SetBinContent(thisevent,ADCwords_crate9 / float(NumWords_crate9));
+				hEventByEventCompression->SetBinContent(thisevent-(evnum-10),ADCwordsEvent / float(NumWordsEvent));
+				hEventByEventCompression_c1->SetBinContent(thisevent-(evnum-10),ADCwords_crate1 / float(NumWords_crate1));
+				hEventByEventCompression_c2->SetBinContent(thisevent-(evnum-10),ADCwords_crate2 / float(NumWords_crate2));
+				hEventByEventCompression_c3->SetBinContent(thisevent-(evnum-10),ADCwords_crate3 / float(NumWords_crate3));
+				hEventByEventCompression_c4->SetBinContent(thisevent-(evnum-10),ADCwords_crate4 / float(NumWords_crate4));
+				hEventByEventCompression_c5->SetBinContent(thisevent-(evnum-10),ADCwords_crate5 / float(NumWords_crate5));
+				hEventByEventCompression_c6->SetBinContent(thisevent-(evnum-10),ADCwords_crate6 / float(NumWords_crate6));
+				hEventByEventCompression_c7->SetBinContent(thisevent-(evnum-10),ADCwords_crate7 / float(NumWords_crate7));
+				hEventByEventCompression_c8->SetBinContent(thisevent-(evnum-10),ADCwords_crate8 / float(NumWords_crate8));
+				hEventByEventCompression_c9->SetBinContent(thisevent-(evnum-10),ADCwords_crate9 / float(NumWords_crate9));
 			}
 			hCBC_01->Fill(ADCwords_crate1/float(NumWords_crate1));
 			hCBC_02->Fill(ADCwords_crate2/float(NumWords_crate2));
