@@ -9,7 +9,7 @@ import re
 # runbuffer is how many blank runs we'll try before accepting that we really are at the end
 listout = "pathlist.txt"
 
-if len(sys.argv) == 2:
+if len(sys.argv) == 3:
 	thisrun = int(sys.argv[1])
 	thisevent = int(sys.argv[2])
 else:
