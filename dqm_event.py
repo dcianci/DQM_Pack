@@ -38,6 +38,6 @@ if len(files) > 0:
 
 
 print "Run num: %s, Files in run: %s" %(thisrun, len(files))
-os.system("./swizzlePlots %i %i"%(thisrun, thisevent))
+os.system("./eventTest %i %i"%(thisrun, thisevent))
 os.system("rm -f paths/*.root")
 os.remove(listout)
