@@ -44,273 +44,259 @@ bool makePlots(int rnum, int evnum){
 	std::string logname = logloc + "dqm_log_" + std::to_string(rnum) + ".log";
 	logger.open(logname);
 
-	if(N_FILES == 0)
-		logger << "Run - " << rnum << ", No filepaths found.\n";
+	// We want one set of plots for each run, so we're combining all of these files into one giganto-thing.
+	canv = new TCanvas();
 
-	// Now, let's keep track of how many warnings this run sets off
-	int nt_flags = 0;
-	int n_events = 0;
-	if(N_FILES){
+	double lastFrame = -1;
+	double lastSample = -1;
+	double lastTime = -1.;
+	double lastTimeBNB = -1.;
+	double lastTimeNuMI = -1.;
+	double lastTimeEXT = -1.;
 
-		// We want one set of plots for each run, so we're combining all of these files into one giganto-thing.
-		canv = new TCanvas();
+	double firstEventTime = -1; double finalEventTime = -1;
+	double firstEventTimeBNB = -1; double finalEventTimeBNB = -1;
+	double firstEventTimeNuMI = -1; double finalEventTimeNuMI = -1;
+	double firstEventTimeEXT = -1; double finalEventTimeEXT = -1;
 
-		double lastFrame = -1;
-		double lastSample = -1;
-		double lastTime = -1.;
-		double lastTimeBNB = -1.;
-		double lastTimeNuMI = -1.;
-		double lastTimeEXT = -1.;
+	int ADCwords_crate0, ADCwords_crate1, ADCwords_crate2, ADCwords_crate3, ADCwords_crate4, ADCwords_crate5, ADCwords_crate6, ADCwords_crate7, ADCwords_crate8, ADCwords_crate9, NumWords_crate1, NumWords_crate2, NumWords_crate3, NumWords_crate4, NumWords_crate5, NumWords_crate6, NumWords_crate7, NumWords_crate8, NumWords_crate9;
+	int event;
+	double triggerTime;
 
-		double firstEventTime = -1; double finalEventTime = -1;
-		double firstEventTimeBNB = -1; double finalEventTimeBNB = -1;
-		double firstEventTimeNuMI = -1; double finalEventTimeNuMI = -1;
-		double firstEventTimeEXT = -1; double finalEventTimeEXT = -1;
+	TH1D* hEventByEventCompression = new TH1D("", "Event-by-event Compression; Event Number; Compression Factor",21,evnum-10,evnum+10);
+	TH1D* hEventByEventCompression_c1 = new TH1D("", "Event-by-event Compression Crate 1; Event Number; Compression Factor",21,evnum-10,evnum+10);
+	TH1D* hEventByEventCompression_c2 = new TH1D("", "Event-by-event Compression Crate 2; Event Number; Compression Factor",21,evnum-10,evnum+10);
+	TH1D* hEventByEventCompression_c3 = new TH1D("", "Event-by-event Compression Crate 3; Event Number; Compression Factor",21,evnum-10,evnum+10);
+	TH1D* hEventByEventCompression_c4 = new TH1D("", "Event-by-event Compression Crate 4; Event Number; Compression Factor",21,evnum-10,evnum+10);
+	TH1D* hEventByEventCompression_c5 = new TH1D("", "Event-by-event Compression Crate 5; Event Number; Compression Factor",21,evnum-10,evnum+10);
+	TH1D* hEventByEventCompression_c6 = new TH1D("", "Event-by-event Compression Crate 6; Event Number; Compression Factor",21,evnum-10,evnum+10);
+	TH1D* hEventByEventCompression_c7 = new TH1D("", "Event-by-event Compression Crate 7; Event Number; Compression Factor",21,evnum-10,evnum+10);
+	TH1D* hEventByEventCompression_c8 = new TH1D("", "Event-by-event Compression Crate 8; Event Number; Compression Factor",21,evnum-10,evnum+10);
+	TH1D* hEventByEventCompression_c9 = new TH1D("", "Event-by-event Compression Crate 9; Event Number; Compression Factor",21,evnum-10,evnum+10);
 
-		int ADCwords_crate0, ADCwords_crate1, ADCwords_crate2, ADCwords_crate3, ADCwords_crate4, ADCwords_crate5, ADCwords_crate6, ADCwords_crate7, ADCwords_crate8, ADCwords_crate9, NumWords_crate1, NumWords_crate2, NumWords_crate3, NumWords_crate4, NumWords_crate5, NumWords_crate6, NumWords_crate7, NumWords_crate8, NumWords_crate9;
-		int event;
+	int ADCwordsEvent,NumWordsEvent;
+	long int ADCwords0 = 0; long int ADCwords1 = 0; long int ADCwords2 = 0; long int ADCwords3 = 0; long int ADCwords4 = 0; long int ADCwords5 = 0; long int ADCwords6 = 0; long int ADCwords7 = 0; long int ADCwords8 = 0; long int ADCwords9 = 0;
+	long int NumWords0 = 0; long int NumWords1 = 0; long int NumWords2 = 0; long int NumWords3 = 0; long int NumWords4 = 0; long int NumWords5 = 0; long int NumWords6 = 0; long int NumWords7 = 0; long int NumWords8 = 0; long int NumWords9 = 0;
 
-		TH1D* hEventByEventCompression = new TH1D("", "Event-by-event Compression; Event Number; Compression Factor",21,evnum-10,evnum+10);
-		TH1D* hEventByEventCompression_c1 = new TH1D("", "Event-by-event Compression Crate 1; Event Number; Compression Factor",21,evnum-10,evnum+10);
-		TH1D* hEventByEventCompression_c2 = new TH1D("", "Event-by-event Compression Crate 2; Event Number; Compression Factor",21,evnum-10,evnum+10);
-		TH1D* hEventByEventCompression_c3 = new TH1D("", "Event-by-event Compression Crate 3; Event Number; Compression Factor",21,evnum-10,evnum+10);
-		TH1D* hEventByEventCompression_c4 = new TH1D("", "Event-by-event Compression Crate 4; Event Number; Compression Factor",21,evnum-10,evnum+10);
-		TH1D* hEventByEventCompression_c5 = new TH1D("", "Event-by-event Compression Crate 5; Event Number; Compression Factor",21,evnum-10,evnum+10);
-		TH1D* hEventByEventCompression_c6 = new TH1D("", "Event-by-event Compression Crate 6; Event Number; Compression Factor",21,evnum-10,evnum+10);
-		TH1D* hEventByEventCompression_c7 = new TH1D("", "Event-by-event Compression Crate 7; Event Number; Compression Factor",21,evnum-10,evnum+10);
-		TH1D* hEventByEventCompression_c8 = new TH1D("", "Event-by-event Compression Crate 8; Event Number; Compression Factor",21,evnum-10,evnum+10);
-		TH1D* hEventByEventCompression_c9 = new TH1D("", "Event-by-event Compression Crate 9; Event Number; Compression Factor",21,evnum-10,evnum+10);
+	std::cout << "Starting to loop through everything." << std::endl;
 
-		int ADCwordsEvent,NumWordsEvent;
-		long int ADCwords0 = 0; long int ADCwords1 = 0; long int ADCwords2 = 0; long int ADCwords3 = 0; long int ADCwords4 = 0; long int ADCwords5 = 0; long int ADCwords6 = 0; long int ADCwords7 = 0; long int ADCwords8 = 0; long int ADCwords9 = 0;
-		long int NumWords0 = 0; long int NumWords1 = 0; long int NumWords2 = 0; long int NumWords3 = 0; long int NumWords4 = 0; long int NumWords5 = 0; long int NumWords6 = 0; long int NumWords7 = 0; long int NumWords8 = 0; long int NumWords9 = 0;
+	N_FILES = 1;
 
-		std::cout << "Starting to loop through everything." << std::endl;
+	for(int i = 0; i < int(N_FILES); i++){
+		if(i % 5 == 0)
+			std::cout << "Path: " << i << "/" << N_FILES << std::endl;
+		if(f_daq) f_daq->Close();
+		f_daq = new TFile(("paths/"+paths[i]).c_str());
+		t_tree = (TTree*)(f_daq->Get("Debug/tMyTree"));
+		std::cout << "Loaded file. Setting branches." << std::endl;
+		t_tree->SetBranchAddress("event", &event);
+		t_tree->SetBranchAddress("triggerTime", &triggerTime);
+		t_tree->SetBranchAddress("ADCwords_crate0",&ADCwords_crate0);
+		t_tree->SetBranchAddress("ADCwords_crate1",&ADCwords_crate1);
+		t_tree->SetBranchAddress("ADCwords_crate2",&ADCwords_crate2);
+		t_tree->SetBranchAddress("ADCwords_crate3",&ADCwords_crate3);
+		t_tree->SetBranchAddress("ADCwords_crate4",&ADCwords_crate4);
+		t_tree->SetBranchAddress("ADCwords_crate5",&ADCwords_crate5);
+		t_tree->SetBranchAddress("ADCwords_crate6",&ADCwords_crate6);
+		t_tree->SetBranchAddress("ADCwords_crate7",&ADCwords_crate7);
+		t_tree->SetBranchAddress("ADCwords_crate8",&ADCwords_crate8);
+		t_tree->SetBranchAddress("ADCwords_crate9",&ADCwords_crate9);
+		t_tree->SetBranchAddress("NumWords_crate1",&NumWords_crate1);
+		t_tree->SetBranchAddress("NumWords_crate2",&NumWords_crate2);
+		t_tree->SetBranchAddress("NumWords_crate3",&NumWords_crate3);
+		t_tree->SetBranchAddress("NumWords_crate4",&NumWords_crate4);
+		t_tree->SetBranchAddress("NumWords_crate5",&NumWords_crate5);
+		t_tree->SetBranchAddress("NumWords_crate6",&NumWords_crate6);
+		t_tree->SetBranchAddress("NumWords_crate7",&NumWords_crate7);
+		t_tree->SetBranchAddress("NumWords_crate8",&NumWords_crate8);
+		t_tree->SetBranchAddress("NumWords_crate9",&NumWords_crate9);
+		std::cout << "Looping through entries" << std::endl;
 
-		for(int i = 0; i < int(N_FILES); i++){
-			if(i % 5 == 0)
-				std::cout << "Path: " << i << "/" << N_FILES << std::endl;
+		double therighttime = 0.;
 
-			if(f_daq) f_daq->Close();
-			f_daq = new TFile(("paths/"+paths[i]).c_str());
-			t_tree = (TTree*)(f_daq->Get("Debug/tMyTree"));
-			std::cout << "Loaded file. Setting branches." << std::endl;
+		for(int j = 0; j < t_tree->GetEntries(); j++){
 
-			t_tree->SetBranchAddress("event", &event);
-			t_tree->SetBranchAddress("ADCwords_crate0",&ADCwords_crate0);
-			t_tree->SetBranchAddress("ADCwords_crate1",&ADCwords_crate1);
-			t_tree->SetBranchAddress("ADCwords_crate2",&ADCwords_crate2);
-			t_tree->SetBranchAddress("ADCwords_crate3",&ADCwords_crate3);
-			t_tree->SetBranchAddress("ADCwords_crate4",&ADCwords_crate4);
-			t_tree->SetBranchAddress("ADCwords_crate5",&ADCwords_crate5);
-			t_tree->SetBranchAddress("ADCwords_crate6",&ADCwords_crate6);
-			t_tree->SetBranchAddress("ADCwords_crate7",&ADCwords_crate7);
-			t_tree->SetBranchAddress("ADCwords_crate8",&ADCwords_crate8);
-			t_tree->SetBranchAddress("ADCwords_crate9",&ADCwords_crate9);
-			t_tree->SetBranchAddress("NumWords_crate1",&NumWords_crate1);
-			t_tree->SetBranchAddress("NumWords_crate2",&NumWords_crate2);
-			t_tree->SetBranchAddress("NumWords_crate3",&NumWords_crate3);
-			t_tree->SetBranchAddress("NumWords_crate4",&NumWords_crate4);
-			t_tree->SetBranchAddress("NumWords_crate5",&NumWords_crate5);
-			t_tree->SetBranchAddress("NumWords_crate6",&NumWords_crate6);
-			t_tree->SetBranchAddress("NumWords_crate7",&NumWords_crate7);
-			t_tree->SetBranchAddress("NumWords_crate8",&NumWords_crate8);
-			t_tree->SetBranchAddress("NumWords_crate9",&NumWords_crate9);
+			t_tree->GetEntry(j);
 
-			std::cout << "Looping through entries" << std::endl;
-			for(int j = 0; j < t_tree->GetEntries(); j++){
-				t_tree->GetEntry(j);
+			if(triggerTime < therighttime) std::cout << "BANGBANGBANG" << std::endl;
+			std::cout << event << ": trigtime--" << triggerTime << std::endl;
 
-				if(event < evnum-10 || event > evnum+10) continue;
+			if(event < evnum-10 || event > evnum+10) continue;
 
-				ADCwordsEvent = ADCwords_crate0;
-				ADCwordsEvent += ADCwords_crate1;
-				ADCwordsEvent += ADCwords_crate2;
-				ADCwordsEvent += ADCwords_crate3;
-				ADCwordsEvent += ADCwords_crate4;
-				ADCwordsEvent += ADCwords_crate5;
-				ADCwordsEvent += ADCwords_crate6;
-				ADCwordsEvent += ADCwords_crate7;
-				ADCwordsEvent += ADCwords_crate8;
-				ADCwordsEvent += ADCwords_crate9;
-				NumWordsEvent = NumWords_crate1;
-				NumWordsEvent += NumWords_crate2;
-				NumWordsEvent += NumWords_crate3;
-				NumWordsEvent += NumWords_crate4;
-				NumWordsEvent += NumWords_crate5;
-				NumWordsEvent += NumWords_crate6;
-				NumWordsEvent += NumWords_crate7;
-				NumWordsEvent += NumWords_crate8;
-				NumWordsEvent += NumWords_crate9;
-				if (NumWordsEvent){
-					hEventByEventCompression->SetBinContent(event,ADCwordsEvent / float(NumWordsEvent));
-					hEventByEventCompression_c1->SetBinContent(event,ADCwords_crate1 / float(NumWords_crate1));
-					hEventByEventCompression_c2->SetBinContent(event,ADCwords_crate2 / float(NumWords_crate2));
-					hEventByEventCompression_c3->SetBinContent(event,ADCwords_crate3 / float(NumWords_crate3));
-					hEventByEventCompression_c4->SetBinContent(event,ADCwords_crate4 / float(NumWords_crate4));
-					hEventByEventCompression_c5->SetBinContent(event,ADCwords_crate5 / float(NumWords_crate5));
-					hEventByEventCompression_c6->SetBinContent(event,ADCwords_crate6 / float(NumWords_crate6));
-					hEventByEventCompression_c7->SetBinContent(event,ADCwords_crate7 / float(NumWords_crate7));
-					hEventByEventCompression_c8->SetBinContent(event,ADCwords_crate8 / float(NumWords_crate8));
-					hEventByEventCompression_c9->SetBinContent(event,ADCwords_crate9 / float(NumWords_crate9));
-				}
-				hCBC_01->Fill(ADCwords_crate1/float(NumWords_crate1));
-				hCBC_02->Fill(ADCwords_crate2/float(NumWords_crate2));
-				hCBC_03->Fill(ADCwords_crate3/float(NumWords_crate3));
-				hCBC_04->Fill(ADCwords_crate4/float(NumWords_crate4));
-				hCBC_05->Fill(ADCwords_crate5/float(NumWords_crate5));
-				hCBC_06->Fill(ADCwords_crate6/float(NumWords_crate6));
-				hCBC_07->Fill(ADCwords_crate7/float(NumWords_crate7));
-				hCBC_08->Fill(ADCwords_crate8/float(NumWords_crate8));
-				hCBC_09->Fill(ADCwords_crate9/float(NumWords_crate9));
-
-				ADCwords0 += ADCwords_crate0;
-				ADCwords1 += ADCwords_crate1;
-				ADCwords2 += ADCwords_crate2;
-				ADCwords3 += ADCwords_crate3;
-				ADCwords4 += ADCwords_crate4;
-				ADCwords5 += ADCwords_crate5;
-				ADCwords6 += ADCwords_crate6;
-				ADCwords7 += ADCwords_crate7;
-				ADCwords8 += ADCwords_crate8;
-				ADCwords9 += ADCwords_crate9;
-				NumWords1 += NumWords_crate1;
-				NumWords2 += NumWords_crate2;
-				NumWords3 += NumWords_crate3;
-				NumWords4 += NumWords_crate4;
-				NumWords5 += NumWords_crate5;
-				NumWords6 += NumWords_crate6;
-				NumWords7 += NumWords_crate7;
-				NumWords8 += NumWords_crate8;
-				NumWords9 += NumWords_crate9;
+			ADCwordsEvent = ADCwords_crate0;
+			ADCwordsEvent += ADCwords_crate1;
+			ADCwordsEvent += ADCwords_crate2;
+			ADCwordsEvent += ADCwords_crate3;
+			ADCwordsEvent += ADCwords_crate4;
+			ADCwordsEvent += ADCwords_crate5;
+			ADCwordsEvent += ADCwords_crate6;
+			ADCwordsEvent += ADCwords_crate7;
+			ADCwordsEvent += ADCwords_crate8;
+			ADCwordsEvent += ADCwords_crate9;
+			NumWordsEvent = NumWords_crate1;
+			NumWordsEvent += NumWords_crate2;
+			NumWordsEvent += NumWords_crate3;
+			NumWordsEvent += NumWords_crate4;
+			NumWordsEvent += NumWords_crate5;
+			NumWordsEvent += NumWords_crate6;
+			NumWordsEvent += NumWords_crate7;
+			NumWordsEvent += NumWords_crate8;
+			NumWordsEvent += NumWords_crate9;
+			if (NumWordsEvent){
+				hEventByEventCompression->SetBinContent(event,ADCwordsEvent / float(NumWordsEvent));
+				hEventByEventCompression_c1->SetBinContent(event,ADCwords_crate1 / float(NumWords_crate1));
+				hEventByEventCompression_c2->SetBinContent(event,ADCwords_crate2 / float(NumWords_crate2));
+				hEventByEventCompression_c3->SetBinContent(event,ADCwords_crate3 / float(NumWords_crate3));
+				hEventByEventCompression_c4->SetBinContent(event,ADCwords_crate4 / float(NumWords_crate4));
+				hEventByEventCompression_c5->SetBinContent(event,ADCwords_crate5 / float(NumWords_crate5));
+				hEventByEventCompression_c6->SetBinContent(event,ADCwords_crate6 / float(NumWords_crate6));
+				hEventByEventCompression_c7->SetBinContent(event,ADCwords_crate7 / float(NumWords_crate7));
+				hEventByEventCompression_c8->SetBinContent(event,ADCwords_crate8 / float(NumWords_crate8));
+				hEventByEventCompression_c9->SetBinContent(event,ADCwords_crate9 / float(NumWords_crate9));
 			}
-
+			hCBC_01->Fill(ADCwords_crate1/float(NumWords_crate1));
+			hCBC_02->Fill(ADCwords_crate2/float(NumWords_crate2));
+			hCBC_03->Fill(ADCwords_crate3/float(NumWords_crate3));
+			hCBC_04->Fill(ADCwords_crate4/float(NumWords_crate4));
+			hCBC_05->Fill(ADCwords_crate5/float(NumWords_crate5));
+			hCBC_06->Fill(ADCwords_crate6/float(NumWords_crate6));
+			hCBC_07->Fill(ADCwords_crate7/float(NumWords_crate7));
+			hCBC_08->Fill(ADCwords_crate8/float(NumWords_crate8));
+			hCBC_09->Fill(ADCwords_crate9/float(NumWords_crate9));
+			ADCwords0 += ADCwords_crate0;
+			ADCwords1 += ADCwords_crate1;
+			ADCwords2 += ADCwords_crate2;
+			ADCwords3 += ADCwords_crate3;
+			ADCwords4 += ADCwords_crate4;
+			ADCwords5 += ADCwords_crate5;
+			ADCwords6 += ADCwords_crate6;
+			ADCwords7 += ADCwords_crate7;
+			ADCwords8 += ADCwords_crate8;
+			ADCwords9 += ADCwords_crate9;
+			NumWords1 += NumWords_crate1;
+			NumWords2 += NumWords_crate2;
+			NumWords3 += NumWords_crate3;
+			NumWords4 += NumWords_crate4;
+			NumWords5 += NumWords_crate5;
+			NumWords6 += NumWords_crate6;
+			NumWords7 += NumWords_crate7;
+			NumWords8 += NumWords_crate8;
+			NumWords9 += NumWords_crate9;
 		}
-
-		std::cout << "Hot dog! Everything looped through. Now to print all the plots" << std::endl;
-
-		gStyle->SetOptStat(0000);
- 		gStyle->SetOptFit(0000);
- 		gStyle->SetPadBorderMode(0);
- 		gStyle->SetPadBottomMargin(0.15);
- 		gStyle->SetPadLeftMargin(0.15);
- 		gStyle->SetPadRightMargin(0.05);
- 		gStyle->SetFrameBorderMode(0);
- 		gStyle->SetCanvasBorderMode(0);
- 		gStyle->SetPalette(1);
- 		gStyle->SetCanvasColor(0);
- 		gStyle->SetPadColor(0);
-
-		if (NumWords1){
-			cbc_01 = ADCwords1/float(NumWords1);
-			cbc_01err = hCBC_01->GetRMS();
-		}
-		if (NumWords2){
-			cbc_02 = ADCwords2/float(NumWords2);
-			cbc_02err = hCBC_02->GetRMS();
-		}
-		if (NumWords3){
-			cbc_03 = ADCwords3/float(NumWords3);
-			cbc_03err = hCBC_03->GetRMS();
-		}
-		if (NumWords4){
-			cbc_04 = ADCwords4/float(NumWords4);
-			cbc_04err = hCBC_04->GetRMS();
-		}
-		if (NumWords5){
-			cbc_05 = ADCwords5/float(NumWords5);
-			cbc_05err = hCBC_05->GetRMS();
-		}
-		if (NumWords6){
-			cbc_06 = ADCwords6/float(NumWords6);
-			cbc_06err = hCBC_06->GetRMS();
-		}
-		if (NumWords7){
-			cbc_07 = ADCwords7/float(NumWords7);
-			cbc_07err = hCBC_07->GetRMS();
-		}
-		if (NumWords8){
-			cbc_08 = ADCwords8/float(NumWords8);
-			cbc_08err = hCBC_08->GetRMS();
-		}
-		if (NumWords9){
-			cbc_09 = ADCwords9/float(NumWords9);
-			cbc_09err = hCBC_09->GetRMS();
-		}
-
-		gStyle->SetOptStat(0000);
-		hEventByEventCompression->SetMinimum(0);
-		hEventByEventCompression->SetMaximum(9);
-		hEventByEventCompression->Draw();
-		if (save)
-			if (NumWordsEvent)
-				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent"+to_string(rnum)+".eps").c_str());
-
-		hEventByEventCompression_c1->SetMinimum(0);
-		hEventByEventCompression_c1->SetMaximum(9);
-		hEventByEventCompression_c1->Draw();
-		if (save)
-			if (NumWords_crate9)
-				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent_crate1"+to_string(rnum)+".eps").c_str());
-
-		hEventByEventCompression_c2->SetMinimum(0);
-		hEventByEventCompression_c2->SetMaximum(9);
-		hEventByEventCompression_c2->Draw();
-		if (save)
-			if (NumWords_crate9)
-				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent_crate2"+to_string(rnum)+".eps").c_str());
-
-		hEventByEventCompression_c3->SetMinimum(0);
-		hEventByEventCompression_c3->SetMaximum(9);
-		hEventByEventCompression_c3->Draw();
-		if (save)
-			if (NumWords_crate9)
-				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent_crate3"+to_string(rnum)+".eps").c_str());
-
-		hEventByEventCompression_c4->SetMinimum(0);
-		hEventByEventCompression_c4->SetMaximum(9);
-		hEventByEventCompression_c4->Draw();
-		if (save)
-			if (NumWords_crate9)
-				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent_crate4"+to_string(rnum)+".eps").c_str());
-
-		hEventByEventCompression_c5->SetMinimum(0);
-		hEventByEventCompression_c5->SetMaximum(9);
-		hEventByEventCompression_c5->Draw();
-		if (save)
-			if (NumWords_crate9)
-				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent_crate5"+to_string(rnum)+".eps").c_str());
-
-		hEventByEventCompression_c6->SetMinimum(0);
-		hEventByEventCompression_c6->SetMaximum(9);
-		hEventByEventCompression_c6->Draw();
-		if (save)
-			if (NumWords_crate9)
-				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent_crate6"+to_string(rnum)+".eps").c_str());
-
-		hEventByEventCompression_c7->SetMinimum(0);
-		hEventByEventCompression_c7->SetMaximum(9);
-		hEventByEventCompression_c7->Draw();
-		if (save)
-			if (NumWords_crate9)
-				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent_crate7"+to_string(rnum)+".eps").c_str());
-
-		hEventByEventCompression_c8->SetMinimum(0);
-		hEventByEventCompression_c8->SetMaximum(9);
-		hEventByEventCompression_c8->Draw();
-		if (save)
-			if (NumWords_crate9)
-				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent_crate8"+to_string(rnum)+".eps").c_str());
-
-		hEventByEventCompression_c9->SetMinimum(0);
-		hEventByEventCompression_c9->SetMaximum(9);
-		hEventByEventCompression_c9->Draw();
-		if (save)
-			if (NumWords_crate9)
-				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent_crate9"+to_string(rnum)+".eps").c_str());
-
-		f_daq->Close();
 	}
+	std::cout << "Hot dog! Everything looped through. Now to print all the plots" << std::endl;
+
+	gStyle->SetOptStat(0000);
+ 	gStyle->SetOptFit(0000);
+ 	gStyle->SetPadBorderMode(0);
+ 	gStyle->SetPadBottomMargin(0.15);
+ 	gStyle->SetPadLeftMargin(0.15);
+ 	gStyle->SetPadRightMargin(0.05);
+ 	gStyle->SetFrameBorderMode(0);
+ 	gStyle->SetCanvasBorderMode(0);
+ 	gStyle->SetPalette(1);
+ 	gStyle->SetCanvasColor(0);
+ 	gStyle->SetPadColor(0);
+
+	if (NumWords1){
+		cbc_01 = ADCwords1/float(NumWords1);
+		cbc_01err = hCBC_01->GetRMS();
+	}
+	if (NumWords2){
+		cbc_02 = ADCwords2/float(NumWords2);
+		cbc_02err = hCBC_02->GetRMS();
+	}
+	if (NumWords3){
+		cbc_03 = ADCwords3/float(NumWords3);
+		cbc_03err = hCBC_03->GetRMS();
+	}
+	if (NumWords4){
+		cbc_04 = ADCwords4/float(NumWords4);
+		cbc_04err = hCBC_04->GetRMS();
+	}
+	if (NumWords5){
+		cbc_05 = ADCwords5/float(NumWords5);
+		cbc_05err = hCBC_05->GetRMS();
+	}
+	if (NumWords6){
+		cbc_06 = ADCwords6/float(NumWords6);
+		cbc_06err = hCBC_06->GetRMS();
+	}
+	if (NumWords7){
+		cbc_07 = ADCwords7/float(NumWords7);
+		cbc_07err = hCBC_07->GetRMS();
+	}
+	if (NumWords8){
+		cbc_08 = ADCwords8/float(NumWords8);
+		cbc_08err = hCBC_08->GetRMS();
+	}
+	if (NumWords9){
+		cbc_09 = ADCwords9/float(NumWords9);
+		cbc_09err = hCBC_09->GetRMS();
+	}
+
+	gStyle->SetOptStat(0000);
+	hEventByEventCompression->SetMinimum(0);
+	hEventByEventCompression->SetMaximum(9);
+	hEventByEventCompression->Draw();
+	if (save)
+		if (NumWordsEvent)
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent"+to_string(rnum)+".eps").c_str());
+	hEventByEventCompression_c1->SetMinimum(0);
+	hEventByEventCompression_c1->SetMaximum(9);
+	hEventByEventCompression_c1->Draw();
+	if (save)
+		if (NumWords_crate9)
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent_crate1"+to_string(rnum)+".eps").c_str());
+	hEventByEventCompression_c2->SetMinimum(0);
+	hEventByEventCompression_c2->SetMaximum(9);
+	hEventByEventCompression_c2->Draw();
+	if (save)
+		if (NumWords_crate9)
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent_crate2"+to_string(rnum)+".eps").c_str());
+	hEventByEventCompression_c3->SetMinimum(0);
+	hEventByEventCompression_c3->SetMaximum(9);
+	hEventByEventCompression_c3->Draw();
+	if (save)
+		if (NumWords_crate9)
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent_crate3"+to_string(rnum)+".eps").c_str());
+	hEventByEventCompression_c4->SetMinimum(0);
+	hEventByEventCompression_c4->SetMaximum(9);
+	hEventByEventCompression_c4->Draw();
+	if (save)
+		if (NumWords_crate9)
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent_crate4"+to_string(rnum)+".eps").c_str());
+	hEventByEventCompression_c5->SetMinimum(0);
+	hEventByEventCompression_c5->SetMaximum(9);
+	hEventByEventCompression_c5->Draw();
+	if (save)
+		if (NumWords_crate9)
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent_crate5"+to_string(rnum)+".eps").c_str());
+	hEventByEventCompression_c6->SetMinimum(0);
+	hEventByEventCompression_c6->SetMaximum(9);
+	hEventByEventCompression_c6->Draw();
+	if (save)
+		if (NumWords_crate9)
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent_crate6"+to_string(rnum)+".eps").c_str());
+	hEventByEventCompression_c7->SetMinimum(0);
+	hEventByEventCompression_c7->SetMaximum(9);
+	hEventByEventCompression_c7->Draw();
+	if (save)
+		if (NumWords_crate9)
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent_crate7"+to_string(rnum)+".eps").c_str());
+	hEventByEventCompression_c8->SetMinimum(0);
+	hEventByEventCompression_c8->SetMaximum(9);
+	hEventByEventCompression_c8->Draw();
+	if (save)
+		if (NumWords_crate9)
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent_crate8"+to_string(rnum)+".eps").c_str());
+	hEventByEventCompression_c9->SetMinimum(0);
+	hEventByEventCompression_c9->SetMaximum(9);
+	hEventByEventCompression_c9->Draw();
+	if (save)
+		if (NumWords_crate9)
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent_crate9"+to_string(rnum)+".eps").c_str());
+	f_daq->Close();
 
 	logger.close();
 
