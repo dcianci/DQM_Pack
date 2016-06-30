@@ -145,6 +145,8 @@ bool makePlots(int rnum, int evnum){
 		for(int j = 0; j < t_tree->GetEntries(); j++){
 
 			t_tree->GetEntry(j);
+
+			std::cout << t_tree->GetEntries() << std::endl;
 			if(j == 0) std::cout << "TRIGTIME: " << triggerTime << std::endl;
 			if(triggerTime < therighttime) std::cout << "BANGBANGBANG" << std::endl;
 
