@@ -38,9 +38,6 @@ if len(files) > 0:
 
 
 print "Run num: %s, Files in run: %s" %(thisrun, len(files))
-if len(files) > 0:
-	if os.path.isfile("plots/plots_"+str(thisrun)+"/") == False:
-		os.mkdir("plots/plots_"+str(thisrun))
 os.system("./swizzlePlots %i %i"%(thisrun, thisevent))
 os.system("rm -f paths/*.root")
 os.remove(listout)
