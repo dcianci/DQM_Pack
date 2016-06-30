@@ -60,7 +60,7 @@ bool makePlots(int rnum, int evnum){
 	double firstEventTimeEXT = -1; double finalEventTimeEXT = -1;
 
 	int ADCwords_crate0, ADCwords_crate1, ADCwords_crate2, ADCwords_crate3, ADCwords_crate4, ADCwords_crate5, ADCwords_crate6, ADCwords_crate7, ADCwords_crate8, ADCwords_crate9, NumWords_crate1, NumWords_crate2, NumWords_crate3, NumWords_crate4, NumWords_crate5, NumWords_crate6, NumWords_crate7, NumWords_crate8, NumWords_crate9;
-	int event;
+	int event, thisevent;
 	double triggerTime;
 
 	TH1D* hEventByEventCompression = new TH1D("", "Event-by-event Compression; Event Number; Compression Factor",21,evnum-10,evnum+10);
@@ -78,17 +78,46 @@ bool makePlots(int rnum, int evnum){
 	long int ADCwords0 = 0; long int ADCwords1 = 0; long int ADCwords2 = 0; long int ADCwords3 = 0; long int ADCwords4 = 0; long int ADCwords5 = 0; long int ADCwords6 = 0; long int ADCwords7 = 0; long int ADCwords8 = 0; long int ADCwords9 = 0;
 	long int NumWords0 = 0; long int NumWords1 = 0; long int NumWords2 = 0; long int NumWords3 = 0; long int NumWords4 = 0; long int NumWords5 = 0; long int NumWords6 = 0; long int NumWords7 = 0; long int NumWords8 = 0; long int NumWords9 = 0;
 
-	std::cout << "Starting to loop through everything." << std::endl;
-
-	N_FILES = 1;
+	std::cout << "Figure the right order for these guys" << std::endl;
+	std::vector < double > orderVec;
 
 	for(int i = 0; i < int(N_FILES); i++){
+		f_daq = new TFile(("paths/"+paths[i]).c_str());
+		t_tree = (TTree*)(f_daq->Get("Debug/tMyTree"));
+		t_tree->SetBranchAddress("triggerTime", &triggerTime);
+
+		t_tree->GetEntry(0);
+		orderVec.push_back(triggerTime);
+	}
+
+	double toosmall = 0.;
+	double smallest; int ismallest;
+	double therighttime = 0.;
+	thisevent = 0;
+
+	std::cout << "Starting to loop through everything." << std::endl;
+	for(int i = 0; i < int(N_FILES); i++){
+
+		for(int f = 0; f < int(N_FILES); f++){
+			if(f == 0){
+				smallest = orderVec[0];
+				ismallest = 0;
+			}
+			else if(orderVec[f] < smallest && orderVec[f] > toosmall){
+					smallest = orderVec[f];
+					ismallest = f;
+			}
+		}
+		toosmall = smallest;
+
 		if(i % 5 == 0)
 			std::cout << "Path: " << i << "/" << N_FILES << std::endl;
 		if(f_daq) f_daq->Close();
-		f_daq = new TFile(("paths/"+paths[i]).c_str());
+		f_daq = new TFile(("paths/"+paths[ismallest]).c_str());
 		t_tree = (TTree*)(f_daq->Get("Debug/tMyTree"));
+
 		std::cout << "Loaded file. Setting branches." << std::endl;
+
 		t_tree->SetBranchAddress("event", &event);
 		t_tree->SetBranchAddress("triggerTime", &triggerTime);
 		t_tree->SetBranchAddress("ADCwords_crate0",&ADCwords_crate0);
@@ -112,16 +141,12 @@ bool makePlots(int rnum, int evnum){
 		t_tree->SetBranchAddress("NumWords_crate9",&NumWords_crate9);
 		std::cout << "Looping through entries" << std::endl;
 
-		double therighttime = 0.;
-
 		for(int j = 0; j < t_tree->GetEntries(); j++){
 
 			t_tree->GetEntry(j);
-
 			if(triggerTime < therighttime) std::cout << "BANGBANGBANG" << std::endl;
-			std::cout << event << ": trigtime--" << triggerTime << std::endl;
 
-			if(event < evnum-10 || event > evnum+10) continue;
+			if(thisevent < evnum - 10 || thisevent > evnum + 10) continue;
 
 			ADCwordsEvent = ADCwords_crate0;
 			ADCwordsEvent += ADCwords_crate1;
@@ -143,16 +168,16 @@ bool makePlots(int rnum, int evnum){
 			NumWordsEvent += NumWords_crate8;
 			NumWordsEvent += NumWords_crate9;
 			if (NumWordsEvent){
-				hEventByEventCompression->SetBinContent(event,ADCwordsEvent / float(NumWordsEvent));
-				hEventByEventCompression_c1->SetBinContent(event,ADCwords_crate1 / float(NumWords_crate1));
-				hEventByEventCompression_c2->SetBinContent(event,ADCwords_crate2 / float(NumWords_crate2));
-				hEventByEventCompression_c3->SetBinContent(event,ADCwords_crate3 / float(NumWords_crate3));
-				hEventByEventCompression_c4->SetBinContent(event,ADCwords_crate4 / float(NumWords_crate4));
-				hEventByEventCompression_c5->SetBinContent(event,ADCwords_crate5 / float(NumWords_crate5));
-				hEventByEventCompression_c6->SetBinContent(event,ADCwords_crate6 / float(NumWords_crate6));
-				hEventByEventCompression_c7->SetBinContent(event,ADCwords_crate7 / float(NumWords_crate7));
-				hEventByEventCompression_c8->SetBinContent(event,ADCwords_crate8 / float(NumWords_crate8));
-				hEventByEventCompression_c9->SetBinContent(event,ADCwords_crate9 / float(NumWords_crate9));
+				hEventByEventCompression->SetBinContent(thisevent,ADCwordsEvent / float(NumWordsEvent));
+				hEventByEventCompression_c1->SetBinContent(thisevent,ADCwords_crate1 / float(NumWords_crate1));
+				hEventByEventCompression_c2->SetBinContent(thisevent,ADCwords_crate2 / float(NumWords_crate2));
+				hEventByEventCompression_c3->SetBinContent(thisevent,ADCwords_crate3 / float(NumWords_crate3));
+				hEventByEventCompression_c4->SetBinContent(thisevent,ADCwords_crate4 / float(NumWords_crate4));
+				hEventByEventCompression_c5->SetBinContent(thisevent,ADCwords_crate5 / float(NumWords_crate5));
+				hEventByEventCompression_c6->SetBinContent(thisevent,ADCwords_crate6 / float(NumWords_crate6));
+				hEventByEventCompression_c7->SetBinContent(thisevent,ADCwords_crate7 / float(NumWords_crate7));
+				hEventByEventCompression_c8->SetBinContent(thisevent,ADCwords_crate8 / float(NumWords_crate8));
+				hEventByEventCompression_c9->SetBinContent(thisevent,ADCwords_crate9 / float(NumWords_crate9));
 			}
 			hCBC_01->Fill(ADCwords_crate1/float(NumWords_crate1));
 			hCBC_02->Fill(ADCwords_crate2/float(NumWords_crate2));
@@ -182,6 +207,8 @@ bool makePlots(int rnum, int evnum){
 			NumWords7 += NumWords_crate7;
 			NumWords8 += NumWords_crate8;
 			NumWords9 += NumWords_crate9;
+
+			thisevent++;
 		}
 	}
 	std::cout << "Hot dog! Everything looped through. Now to print all the plots" << std::endl;
