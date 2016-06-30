@@ -144,6 +144,7 @@ bool makePlots(int rnum, int evnum){
 		for(int j = 0; j < t_tree->GetEntries(); j++){
 
 			t_tree->GetEntry(j);
+			if(j == 0) std::cout << "TRIGTIME: " << triggerTime << std::endl;
 			if(triggerTime < therighttime) std::cout << "BANGBANGBANG" << std::endl;
 
 			if(thisevent < evnum - 10 || thisevent > evnum + 10) {
@@ -211,7 +212,6 @@ bool makePlots(int rnum, int evnum){
 			NumWords8 += NumWords_crate8;
 			NumWords9 += NumWords_crate9;
 
-			std::cout << "EVENT: " << thisevent << std::endl;
 			thisevent++;
 		}
 	}
