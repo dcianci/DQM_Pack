@@ -78,7 +78,7 @@ bool makePlots(int rnum){
 			RO_BNBtriggerFrame, RO_BNBtriggerSample, RO_RWMtriggerFrame, RO_RWMtriggerSample, RO_NuMItriggerFrame, RO_NuMItriggerSample, RO_EXTtriggerFrame, RO_EXTtriggerSample,
 			TPC1triggerFrame, TPC2triggerFrame, TPC3triggerFrame, TPC4triggerFrame, TPC5triggerFrame, TPC6triggerFrame, TPC7triggerFrame, TPC8triggerFrame, TPC9triggerFrame, TPC1triggerSample, TPC2triggerSample, TPC3triggerSample, TPC4triggerSample, TPC5triggerSample, TPC6triggerSample, TPC7triggerSample, TPC8triggerSample, TPC9triggerSample,
 			ADCwords_crate0, ADCwords_crate1, ADCwords_crate2, ADCwords_crate3, ADCwords_crate4, ADCwords_crate5, ADCwords_crate6, ADCwords_crate7, ADCwords_crate8, ADCwords_crate9, NumWords_crate1, NumWords_crate2, NumWords_crate3, NumWords_crate4, NumWords_crate5, NumWords_crate6, NumWords_crate7, NumWords_crate8, NumWords_crate9,
-			N_PMT_waveforms;
+			N_PMT_waveforms, event;
 
 		TH1D* hDeltaTBetweenTriggers = new TH1D("Time between triggers","Time between triggers",300,1e-2,1);
 		TH1D* hDeltaTBetweenTriggersBNB = new TH1D("Time between triggers (BNB)","Time between triggers (BNB)",100,1e-2,1);
@@ -101,8 +101,8 @@ bool makePlots(int rnum){
 		TH1D* hFrameDiffBetweenROAndNuMITrig = new TH1D("Frame DiffRO (NuMI)","Frame Diff from RO to NuMI Trigger; Frame;",9,-5,5);
 		TH1D* hFrameDiffBetweenROAndEXTTrig = new TH1D("Frame DiffRO (EXT)","Frame Diff from RO to EXT Trigger; Frame;",9,-5,5);
 		TH1D* hSampleDiffBetweenROAndBNBTrig = new TH1D("Sample DiffRO (BNB)","Sample Diff from RO to BNB Trigger; Sample;",19,-10,10);
-		TH1D* hSampleDiffBetweenROAndNuMITrig = new TH1D("Sample DiffRO (NuMI)","Sample Diff from RO to NuMI Trigger; Sample;",600,-300,300);
-		TH1D* hSampleDiffBetweenROAndEXTTrig = new TH1D("Sample DiffRO (EXT)","Sample Diff from RO to EXT Trigger; Sample;",600,-300,300);
+		TH1D* hSampleDiffBetweenROAndNuMITrig = new TH1D("Sample DiffRO (NuMI)","Sample Diff from RO to NuMI Trigger; Sample;",19,-10,10);
+		TH1D* hSampleDiffBetweenROAndEXTTrig = new TH1D("Sample DiffRO (EXT)","Sample Diff from RO to EXT Trigger; Sample;",19,-10,10);
 		TH1D* hSampleDiffBetweenRWMAndBNBTrig = new TH1D("","Sample Difference from BNB to RWM; Samples;",32,352,384);
 		TH1D* hFrameDiffBetweenRWMAndBNBTrig = new TH1D("Frame Difference","Frame Difference from BNB to RWM;Frames;",9,-5,5);
 		TH1D* hTimeDiffBetweenRWMAndBNBTrig = new TH1D("", "Time Difference from BNB to RWM; #mus",32,5.5,6);
@@ -121,7 +121,7 @@ bool makePlots(int rnum){
 		TH1D* hMeanCompression_c8 = new TH1D("C8", "Mean Compression; Compression Factor",100,0,7);
 		TH1D* hMeanCompression_c9 = new TH1D("C9", "Mean Compression; Compression Factor",100,0,7);
 
-		TH1D* hEventByEventCompression = new TH1D("", "Event-by-event Compression; Event Number; Compression Factor",500,0,500);
+		TH1D* hEventByEventCompression = new TH1D("", "Event-by-event Compression; Event Number; Compression Factor",20000,0,20000);
 
 		int ADCwordsEvent,NumWordsEvent;
 		long int ADCwords0 = 0; long int ADCwords1 = 0; long int ADCwords2 = 0; long int ADCwords3 = 0; long int ADCwords4 = 0; long int ADCwords5 = 0; long int ADCwords6 = 0; long int ADCwords7 = 0; long int ADCwords8 = 0; long int ADCwords9 = 0;
@@ -138,6 +138,7 @@ bool makePlots(int rnum){
 			t_tree = (TTree*)(f_daq->Get("Debug/tMyTree"));
 			std::cout << "Loaded file. Setting branches." << std::endl;
 
+			t_tree->SetBranchAddress("event", &event);
 			t_tree->SetBranchAddress("triggerTime", &triggerTime);
 			t_tree->SetBranchAddress("triggerBitBNB", &triggerBitBNB);
 			t_tree->SetBranchAddress("triggerBitNuMI", &triggerBitNuMI);
@@ -742,7 +743,7 @@ bool swizzlePlots(int rnum){
 #if !defined(__CINT__) || defined (__MAKECINT__)
 int main(int argc, char* argv[])
 {
-	int num = atoi(argv[0]);
+	int num = atoi(argv[1]);
 	return swizzlePlots(num);
 }
 #endif
