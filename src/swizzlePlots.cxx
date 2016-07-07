@@ -84,10 +84,10 @@ bool makePlots(int rnum){
 		TH1D* hDeltaTBetweenTriggersBNB = new TH1D("Time between triggers (BNB)","Time between triggers (BNB)",100,1e-2,1);
 		TH1D* hDeltaTBetweenTriggersNuMI = new TH1D("Time between triggers (NuMI)","Time between triggers (NuMI)",100,1e-2,1);
 		TH1D* hDeltaTBetweenTriggersEXT = new TH1D("Time between triggers (EXT)","Time between triggers (EXT)",100,1e-2,1);
-		hDeltaTBetweenTriggers->SetTitle("time between triggers;time / s; events");
-		hDeltaTBetweenTriggersBNB->SetTitle("(BNB) time between triggers;time / s; events");
-		hDeltaTBetweenTriggersNuMI->SetTitle("(NuMI) time between triggers;time / s; events");
-		hDeltaTBetweenTriggersEXT->SetTitle("(EXT) time between triggers;time / s; events");
+		hDeltaTBetweenTriggers->SetTitle("Time between triggers;time / #mus; Events");
+		hDeltaTBetweenTriggersBNB->SetTitle("(BNB) Time between triggers;time / #mus; Events");
+		hDeltaTBetweenTriggersNuMI->SetTitle("(NuMI) Time between triggers;time / #mus; Events");
+		hDeltaTBetweenTriggersEXT->SetTitle("(EXT) Time between triggers;time / #mus; Events");
 
 		TH1D* hFrameDiff = new TH1D("Frame Difference", "Frame Difference; Frame;", 9,-5,5);
 		TH1D* hSampleDiff = new TH1D("Sample Difference", "Sample Difference; Sample;", 9, -5, 5);
@@ -106,7 +106,7 @@ bool makePlots(int rnum){
 		TH1D* hSampleDiffBetweenRWMAndBNBTrig = new TH1D("","Sample Difference from BNB to RWM; Samples;",32,352,384);
 		TH1D* hFrameDiffBetweenRWMAndBNBTrig = new TH1D("Frame Difference","Frame Difference from BNB to RWM;Frames;",9,-5,5);
 		TH1D* hTimeDiffBetweenRWMAndBNBTrig = new TH1D("", "Time Difference from BNB to RWM; #mus",32,5.5,6);
-		TH1D* hTimeDiffTriggerToWaveForm = new TH1D("","Time Difference Between PMT Waveform and Trigger; #mu s",64,-3200,4800);
+		TH1D* hTimeDiffTriggerToWaveForm = new TH1D("","Time Difference Between PMT Waveform and Trigger; #mus",64,-3200,4800);
 		TH1D* hTriggerSampleValue = new TH1D("Trigger Sample","Trigger Sample",102400,1,102401);
 
 		TH1D* hCrateByCrateCompression = new TH1D("", "Crate-by-crate Compression; Crate Number; Compression Factor",9,0,9);
@@ -551,7 +551,7 @@ bool makePlots(int rnum){
 			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/PMT_flash_dtFromTrigger"+to_string(rnum)+".eps").c_str());
 
 
-		gStyle->SetOptStat("nemou");
+		gStyle->SetOptStat("nem");
 		hFrameDiffBetweenROAndBNBTrig->Draw();
 		if (save)
 			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/ROtoTrigFrameDiffBNB"+to_string(rnum)+".eps").c_str());
@@ -581,7 +581,7 @@ bool makePlots(int rnum){
 		if (save)
 			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/BNBTrigToRWMTimeDiff"+to_string(rnum)+".eps").c_str());
 
-		gStyle->SetOptStat("meou");
+		gStyle->SetOptStat("me");
 		hTriggerSampleValue->GetXaxis()->SetLimits(-100,102500);
 		hTriggerSampleValue->Draw();
 		if (save)
@@ -675,6 +675,7 @@ bool makePlots(int rnum){
 		if (save)
 			if (NumWordsEvent)
 				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/MeanCompression"+to_string(rnum)+".eps").c_str());
+
 		gStyle->SetOptStat(0000);
 		hEventByEventCompression->SetMinimum(0);
 		hEventByEventCompression->SetMaximum(9);
@@ -688,6 +689,30 @@ bool makePlots(int rnum){
 		if (save)
 			if (NumWordsEvent)
 				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByCrate"+to_string(rnum)+".eps").c_str());
+
+		TCanvas* c2 = new TCanvas();
+		c2->Divide(3,3);
+		c2->cd(1);
+		hMeanCompression_c1->Draw();
+		c2->cd(2);
+		hMeanCompression_c2->Draw();
+		c2->cd(3);
+		hMeanCompression_c3->Draw();
+		c2->cd(4);
+		hMeanCompression_c4->Draw();
+		c2->cd(5);
+		hMeanCompression_c5->Draw();
+		c2->cd(6);
+		hMeanCompression_c6->Draw();
+		c2->cd(7);
+		hMeanCompression_c7->Draw();
+		c2->cd(8);
+		hMeanCompression_c8->Draw();
+		c2->cd(9);
+		hMeanCompression_c9->Draw();
+		if (save)
+			if (NumWordsEvent)
+				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/MeanCompressionCrates_"+to_string(rnum)+".eps").c_str());
 
 		f_daq->Close();
 	}
