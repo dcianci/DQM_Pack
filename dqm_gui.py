@@ -102,7 +102,7 @@ def cmdRunRange():
 	#Check if runs are within bounds
 	runbottom = int(e_rangebottom.get());
 	runtop = int(e_rangetop.get());
-	if min(runbottom,runtop) != runbottom || runbottom != runtop || runbottom >= run_bottom && runtop <= run_top:
+	if min(runbottom,runtop) != runbottom or runbottom != runtop or runbottom < run_bottom or runtop > run_top:
 		print "Those entries aren't right..."
 		return
 	os.system("python dqm_summary.py %i %i"%(runbottom,runtop))
