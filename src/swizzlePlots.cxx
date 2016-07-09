@@ -519,99 +519,99 @@ bool makePlots(int rnum){
 		hTriggerRates->SetBinContent(4, averageTrigRate);
 		hTriggerRates->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/triggerRates"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/triggerRates"+to_string(rnum)+".png").c_str());
 
 		canv->SetLogy(true);
 		hDeltaTBetweenTriggers->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/dTBetweenTriggersAllLin"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/dTBetweenTriggersAllLin"+to_string(rnum)+".png").c_str());
 
 		canv->SetLogx(true);
 		hDeltaTBetweenTriggers->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/dTBetweenTriggersAllLog"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/dTBetweenTriggersAllLog"+to_string(rnum)+".png").c_str());
 
 		canv->SetLogx(false);
 		hDeltaTBetweenTriggersBNB->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/dTBetweenTriggersBNB"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/dTBetweenTriggersBNB"+to_string(rnum)+".png").c_str());
 
 		hDeltaTBetweenTriggersNuMI->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/dTBetweenTriggersNuMI"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/dTBetweenTriggersNuMI"+to_string(rnum)+".png").c_str());
 
 		hDeltaTBetweenTriggersEXT->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/dTBetweenTriggersEXT"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/dTBetweenTriggersEXT"+to_string(rnum)+".png").c_str());
 
 		canv->SetLogy(false);
 
 		hTimeDiffTriggerToWaveForm->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/PMT_flash_dtFromTrigger"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/PMT_flash_dtFromTrigger"+to_string(rnum)+".png").c_str());
 
 
 		gStyle->SetOptStat("nem");
 		hFrameDiffBetweenROAndBNBTrig->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/ROtoTrigFrameDiffBNB"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/ROtoTrigFrameDiffBNB"+to_string(rnum)+".png").c_str());
 		hSampleDiffBetweenROAndBNBTrig->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/ROtoTrigSampleDiffBNB"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/ROtoTrigSampleDiffBNB"+to_string(rnum)+".png").c_str());
 		hFrameDiffBetweenROAndNuMITrig->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/ROtoTrigFrameDiffNuMI"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/ROtoTrigFrameDiffNuMI"+to_string(rnum)+".png").c_str());
 		hSampleDiffBetweenROAndNuMITrig->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/ROtoTrigSampleDiffNuMI"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/ROtoTrigSampleDiffNuMI"+to_string(rnum)+".png").c_str());
 		hFrameDiffBetweenROAndEXTTrig->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/ROtoTrigFrameDiffEXT"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/ROtoTrigFrameDiffEXT"+to_string(rnum)+".png").c_str());
 		hSampleDiffBetweenROAndEXTTrig->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/ROtoTrigSampleDiffEXT"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/ROtoTrigSampleDiffEXT"+to_string(rnum)+".png").c_str());
 		hFrameDiffBetweenRWMAndBNBTrig->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/BNBTrigToRWMFrameDiff"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/BNBTrigToRWMFrameDiff"+to_string(rnum)+".png").c_str());
 		hSampleDiffBetweenRWMAndBNBTrig->Draw();
 		sampleDiffBetweenRWMandBNB = hSampleDiffBetweenRWMAndBNBTrig;
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/BNBTrigToRWMSampleDiff"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/BNBTrigToRWMSampleDiff"+to_string(rnum)+".png").c_str());
 		hTimeDiffBetweenRWMAndBNBTrig->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/BNBTrigToRWMTimeDiff"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/BNBTrigToRWMTimeDiff"+to_string(rnum)+".png").c_str());
 
 		gStyle->SetOptStat("me");
 		hTriggerSampleValue->GetXaxis()->SetLimits(-100,102500);
 		hTriggerSampleValue->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/TriggerSampleValue"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/TriggerSampleValue"+to_string(rnum)+".png").c_str());
 
 		gStyle->SetOptStat("men");
 		hFrameDiff->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/TriggerFrameDifference"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/TriggerFrameDifference"+to_string(rnum)+".png").c_str());
 		hSampleDiff->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/TriggerSampleDifference"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/TriggerSampleDifference"+to_string(rnum)+".png").c_str());
 		hFrameDiffBNB->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/TriggerFrameDifferenceBNB"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/TriggerFrameDifferenceBNB"+to_string(rnum)+".png").c_str());
 		hSampleDiffBNB->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/TriggerSampleDifferenceBNB"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/TriggerSampleDifferenceBNB"+to_string(rnum)+".png").c_str());
 		hFrameDiffNuMI->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/TriggerFrameDifferenceNuMI"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/TriggerFrameDifferenceNuMI"+to_string(rnum)+".png").c_str());
 		hSampleDiffNuMI->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/TriggerSampleDifferenceNuMI"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/TriggerSampleDifferenceNuMI"+to_string(rnum)+".png").c_str());
 		hFrameDiffEXT->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/TriggerFrameDifferenceEXT"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/TriggerFrameDifferenceEXT"+to_string(rnum)+".png").c_str());
 		hSampleDiffEXT->Draw();
 		if (save)
-			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/TriggerSampleDifferenceEXT"+to_string(rnum)+".eps").c_str());
+			canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/TriggerSampleDifferenceEXT"+to_string(rnum)+".png").c_str());
 
 		if (NumWords1){
 			hCrateByCrateCompression->SetBinContent(1,ADCwords1/float(NumWords1));
@@ -674,7 +674,7 @@ bool makePlots(int rnum){
 
 		if (save)
 			if (NumWordsEvent)
-				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/MeanCompression"+to_string(rnum)+".eps").c_str());
+				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/MeanCompression"+to_string(rnum)+".png").c_str());
 
 		gStyle->SetOptStat(0000);
 		hEventByEventCompression->SetMinimum(0);
@@ -682,13 +682,13 @@ bool makePlots(int rnum){
 		hEventByEventCompression->Draw();
 		if (save)
 			if (NumWordsEvent)
-				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent"+to_string(rnum)+".eps").c_str());
+				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByEvent"+to_string(rnum)+".png").c_str());
 		hCrateByCrateCompression->SetMaximum(9);
 		hCrateByCrateCompression->SetMinimum(0);
 		hCrateByCrateCompression->Draw();
 		if (save)
 			if (NumWordsEvent)
-				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByCrate"+to_string(rnum)+".eps").c_str());
+				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/compressionByCrate"+to_string(rnum)+".png").c_str());
 
 		TCanvas* c2 = new TCanvas();
 		c2->Divide(3,3);
@@ -712,7 +712,7 @@ bool makePlots(int rnum){
 		hMeanCompression_c9->Draw();
 		if (save)
 			if (NumWordsEvent)
-				canv->SaveAs((plotloc+"plots_"+to_string(rnum)+"/MeanCompressionCrates_"+to_string(rnum)+".eps").c_str());
+				c2->SaveAs((plotloc+"plots_"+to_string(rnum)+"/MeanCompressionCrates_"+to_string(rnum)+".png").c_str());
 
 		f_daq->Close();
 	}
