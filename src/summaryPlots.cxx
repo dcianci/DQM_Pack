@@ -175,7 +175,7 @@ bool makePlots(int bottom, int top){
 
 	TCanvas* canv = new TCanvas();
 	hEventsPerRun->Draw("col");
-	canv->SaveAs(("summaries/EventsPerRun_"+to_string(bottom)+"-"+to_string(top)+".eps").c_str());
+	canv->SaveAs(("summaries/EventsPerRun_"+to_string(bottom)+"-"+to_string(top)+".png").c_str());
 
 	hCBC_01->SetMinimum(2);
 	hCBC_01->SetMaximum(7);
@@ -275,12 +275,12 @@ bool makePlots(int bottom, int top){
 	leg->AddEntry(hCBC_09,"Crate 9","p");
 	leg->Draw();
 
-	canv->SaveAs(("summaries/CBC_09_"+to_string(bottom)+"-"+to_string(top)+".eps").c_str());
+	canv->SaveAs(("summaries/CBC_09_"+to_string(bottom)+"-"+to_string(top)+".png").c_str());
 
 	hSampleDiffRWMandBNB->Draw("col");
-	canv->SaveAs(("summaries/SampleDiffRWMtoBNB_"+to_string(bottom)+"-"+to_string(top)+".eps").c_str());
+	canv->SaveAs(("summaries/SampleDiffRWMtoBNB_"+to_string(bottom)+"-"+to_string(top)+".png").c_str());
 	hMeanCompression->Draw("col");
-	canv->SaveAs(("summaries/MeanCompression_"+to_string(bottom)+"-"+to_string(top)+".eps").c_str());
+	canv->SaveAs(("summaries/MeanCompression_"+to_string(bottom)+"-"+to_string(top)+".png").c_str());
 
 	TCanvas* c2 = new TCanvas();
 	c2->Divide(3,3);
@@ -302,7 +302,7 @@ bool makePlots(int bottom, int top){
 	hMeanCompression_08->Draw("col");
 	c2->cd(9);
 	hMeanCompression_09->Draw("col");
-	c2->SaveAs(("summaries/MeanCompressionCrate_"+to_string(bottom)+"-"+to_string(top)+".eps").c_str());
+	c2->SaveAs(("summaries/MeanCompressionCrate_"+to_string(bottom)+"-"+to_string(top)+".png").c_str());
 
 
 	return true;

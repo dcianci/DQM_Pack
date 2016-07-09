@@ -56,14 +56,14 @@ while notdoneyet:
 
 		for File in filenames.splitlines():
 			#outf.write(str(filepath+File+"\n"))
-			outf.write(str("paths/"+File+"\n"))
-			os.system("ifdh cp "+str(filepath+File)+" paths/.")
+			outf.write(str(File+"\n"))
+ 			os.system("cp "+str(filepath+File)+" paths/.")
 		outf.close()
 
 
 	print "Run num: %s, Files in run: %s" %(thisrun, len(files))
 	if len(files) > 0:
-		if os.path.isfile("plots/plots_"+str(thisrun)+"/") == False:
+		if os.path.isdir("plots/plots_"+str(thisrun)+"/") == False:
 			os.mkdir("plots/plots_"+str(thisrun))
 	os.system("./swizzlePlots %i"%(thisrun))
 	os.system("rm -f paths/*.root")
