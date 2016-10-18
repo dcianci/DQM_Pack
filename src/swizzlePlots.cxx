@@ -80,10 +80,10 @@ bool makePlots(int rnum){
 		int nNuMI = 0;
 		int nEXT = 0;
 
-		double triggerTime, RO_RWMtriggerTime, PMT_waveform_times[400];
+		double triggerTime, RO_RWMtriggerTime, RO_BNBtriggerTime, RO_NuMItriggerTime, RO_EXTtriggerTime, PMT_waveform_times[400];
 		int triggerBitBNB, triggerBitNuMI, triggerBitEXT,
 			triggerFrame, triggerSample,
-			RO_BNBtriggerFrame, RO_BNBtriggerSample, RO_BNBtriggerTime, RO_RWMtriggerFrame, RO_RWMtriggerSample, RO_RWMtriggerTime, RO_NuMItriggerFrame, RO_NuMItriggerSample, RO_NuMItriggerTime, RO_EXTtriggerFrame, RO_EXTtriggerSample, RO_EXTtriggerTime,
+			RO_BNBtriggerFrame, RO_BNBtriggerSample, RO_RWMtriggerFrame, RO_RWMtriggerSample, RO_NuMItriggerFrame, RO_NuMItriggerSample, RO_EXTtriggerFrame, RO_EXTtriggerSample,
 			PMTtriggerFrame, PMTtriggerSample, TPCtriggerFrame, TPCtriggerSample,
 			ADCwords_crate0, ADCwords_crate1, ADCwords_crate2, ADCwords_crate3, ADCwords_crate4, ADCwords_crate5, ADCwords_crate6, ADCwords_crate7, ADCwords_crate8, ADCwords_crate9, NumWords_crate1, NumWords_crate2, NumWords_crate3, NumWords_crate4, NumWords_crate5, NumWords_crate6, NumWords_crate7, NumWords_crate8, NumWords_crate9,
 			N_PMT_waveforms, event;
