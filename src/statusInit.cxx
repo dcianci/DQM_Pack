@@ -1,3 +1,14 @@
+// statusInit.cxx by Davio Cianci
+//
+//		This macro's job is to initialize the dqm_status.root file, which is our recordkeeping root file where we save all the important
+//	stuff that we want to monitor from one run to the next.
+//		It's got two components:
+//			status (TNtuple): holds run number, number of files for that run, number of events in that run and how many error flags it's thrown
+//			timeFuncs (TTree): holds more interesting stuff that we want to monitor over several runs, like compression info and sample diff between frames.
+//				This is where you'd put new variables to monitor if you wanted to keep track of runs.
+//
+/////////
+
 #include "swizzlePlots.h"
 
 using namespace std;
@@ -11,7 +22,7 @@ bool stInit(){
 	int run_number;
 	float cbc_01, cbc_02, cbc_03, cbc_04, cbc_05, cbc_06, cbc_07, cbc_08, cbc_09;
 	float cbc_01err, cbc_02err, cbc_03err, cbc_04err, cbc_05err, cbc_06err, cbc_07err, cbc_08err, cbc_09err;
-	TH1D *sampleDiffBetweenRWMandBNB = new TH1D("Frame Difference","Frame Difference from BNB to RWM;Frames;",32,352,384);
+	TH1D *sampleDiffBetweenRWMandBNB = new TH1D("Sample Difference","Sample Difference from BNB to RWM;Frames;",32,352,384);
 	TH1D *meanCompression = new TH1D("Compression", "Mean Compression; Compression Factor",100,3,6);
 	TH1D* meanCompression_c1 = new TH1D("C1", "Mean Compression; Compression Factor",100,3,6);
 	TH1D* meanCompression_c2 = new TH1D("C2", "Mean Compression; Compression Factor",100,3,6);

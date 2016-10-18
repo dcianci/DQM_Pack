@@ -83,7 +83,7 @@ bool makePlots(int rnum, int evnum){
 
 	for(int i = 0; i < int(N_FILES); i++){
 		f_daq = new TFile(("paths/"+paths[i]).c_str());
-		t_tree = (TTree*)(f_daq->Get("Debug/tMyTree"));
+		t_tree = (TTree*)(f_daq->Get("Debug/ValidationTree"));
 		t_tree->SetBranchAddress("triggerTime", &triggerTime);
 
 		t_tree->GetEntry(0);
@@ -115,7 +115,7 @@ bool makePlots(int rnum, int evnum){
 			std::cout << "Path: " << i << "/" << N_FILES << std::endl;
 		if(f_daq) f_daq->Close();
 		f_daq = new TFile(("paths/"+paths[ismallest]).c_str());
-		t_tree = (TTree*)(f_daq->Get("Debug/tMyTree"));
+		t_tree = (TTree*)(f_daq->Get("Debug/ValidationTree"));
 
 		std::cout << "Loaded file. Setting branches." << std::endl;
 

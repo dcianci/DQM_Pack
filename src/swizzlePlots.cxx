@@ -1,3 +1,11 @@
+// swizzlePlots.cxx by Davio Cianci
+//
+//		Here's where the meat of the operation takes place. It's given a list of addresses to the swizzler files for a run.
+//	With those, it loops through, makes plots, checks for errors and saves important things to dqm_status.
+//
+/////////
+
+
 #include "swizzlePlots.h"
 
 using namespace std;
@@ -74,9 +82,9 @@ bool makePlots(int rnum){
 
 		double triggerTime, RO_RWMtriggerTime, PMT_waveform_times[400];
 		int triggerBitBNB, triggerBitNuMI, triggerBitEXT,
-			triggerFrame, triggerSample, FEM5triggerFrame, FEM5triggerSample, FEM6triggerFrame, FEM6triggerSample,
-			RO_BNBtriggerFrame, RO_BNBtriggerSample, RO_RWMtriggerFrame, RO_RWMtriggerSample, RO_NuMItriggerFrame, RO_NuMItriggerSample, RO_EXTtriggerFrame, RO_EXTtriggerSample,
-			TPC1triggerFrame, TPC2triggerFrame, TPC3triggerFrame, TPC4triggerFrame, TPC5triggerFrame, TPC6triggerFrame, TPC7triggerFrame, TPC8triggerFrame, TPC9triggerFrame, TPC1triggerSample, TPC2triggerSample, TPC3triggerSample, TPC4triggerSample, TPC5triggerSample, TPC6triggerSample, TPC7triggerSample, TPC8triggerSample, TPC9triggerSample,
+			triggerFrame, triggerSample,
+			RO_BNBtriggerFrame, RO_BNBtriggerSample, RO_BNBtriggerTime, RO_RWMtriggerFrame, RO_RWMtriggerSample, RO_RWMtriggerTime, RO_NuMItriggerFrame, RO_NuMItriggerSample, RO_NuMItriggerTime, RO_EXTtriggerFrame, RO_EXTtriggerSample, RO_EXTtriggerTime,
+			PMTtriggerFrame, PMTtriggerSample, TPCtriggerFrame, TPCtriggerSample,
 			ADCwords_crate0, ADCwords_crate1, ADCwords_crate2, ADCwords_crate3, ADCwords_crate4, ADCwords_crate5, ADCwords_crate6, ADCwords_crate7, ADCwords_crate8, ADCwords_crate9, NumWords_crate1, NumWords_crate2, NumWords_crate3, NumWords_crate4, NumWords_crate5, NumWords_crate6, NumWords_crate7, NumWords_crate8, NumWords_crate9,
 			N_PMT_waveforms, event;
 
@@ -135,7 +143,7 @@ bool makePlots(int rnum){
 
 			if(f_daq) f_daq->Close();
 			f_daq = new TFile(("paths/"+paths[i]).c_str());
-			t_tree = (TTree*)(f_daq->Get("Debug/tMyTree"));
+			t_tree = (TTree*)(f_daq->Get("Debug/ValidationTree"));
 			std::cout << "Loaded file. Setting branches." << std::endl;
 
 			t_tree->SetBranchAddress("event", &event);
@@ -145,37 +153,25 @@ bool makePlots(int rnum){
 			t_tree->SetBranchAddress("triggerBitEXT", &triggerBitEXT);
 			t_tree->SetBranchAddress("triggerFrame",&triggerFrame);
 			t_tree->SetBranchAddress("triggerSample",&triggerSample);
-			t_tree->SetBranchAddress("FEM5triggerFrame",&FEM5triggerFrame);
-			t_tree->SetBranchAddress("FEM5triggerSample",&FEM5triggerSample);
-			t_tree->SetBranchAddress("FEM6triggerFrame",&FEM6triggerFrame);
-			t_tree->SetBranchAddress("FEM6triggerSample",&FEM6triggerSample);
+
 			t_tree->SetBranchAddress("RO_BNBtriggerFrame",&RO_BNBtriggerFrame);
 			t_tree->SetBranchAddress("RO_BNBtriggerSample",&RO_BNBtriggerSample);
+			t_tree->SetBranchAddress("RO_BNBtriggerTime",&RO_BNBtriggerTime);
 			t_tree->SetBranchAddress("RO_RWMtriggerFrame",&RO_RWMtriggerFrame);
 			t_tree->SetBranchAddress("RO_RWMtriggerSample",&RO_RWMtriggerSample);
 			t_tree->SetBranchAddress("RO_RWMtriggerTime",&RO_RWMtriggerTime);
 			t_tree->SetBranchAddress("RO_NuMItriggerFrame",&RO_NuMItriggerFrame);
 			t_tree->SetBranchAddress("RO_NuMItriggerSample",&RO_NuMItriggerSample);
+			t_tree->SetBranchAddress("RO_NuMItriggerTime",&RO_NuMItriggerTime);
 			t_tree->SetBranchAddress("RO_EXTtriggerFrame",&RO_EXTtriggerFrame);
 			t_tree->SetBranchAddress("RO_EXTtriggerSample",&RO_EXTtriggerSample);
-			t_tree->SetBranchAddress("TPC1triggerFrame",&TPC1triggerFrame);
-			t_tree->SetBranchAddress("TPC2triggerFrame",&TPC2triggerFrame);
-			t_tree->SetBranchAddress("TPC3triggerFrame",&TPC3triggerFrame);
-			t_tree->SetBranchAddress("TPC4triggerFrame",&TPC4triggerFrame);
-			t_tree->SetBranchAddress("TPC5triggerFrame",&TPC5triggerFrame);
-			t_tree->SetBranchAddress("TPC6triggerFrame",&TPC6triggerFrame);
-			t_tree->SetBranchAddress("TPC7triggerFrame",&TPC7triggerFrame);
-			t_tree->SetBranchAddress("TPC8triggerFrame",&TPC8triggerFrame);
-			t_tree->SetBranchAddress("TPC9triggerFrame",&TPC9triggerFrame);
-			t_tree->SetBranchAddress("TPC1triggerSample",&TPC1triggerSample);
-			t_tree->SetBranchAddress("TPC2triggerSample",&TPC2triggerSample);
-			t_tree->SetBranchAddress("TPC3triggerSample",&TPC3triggerSample);
-			t_tree->SetBranchAddress("TPC4triggerSample",&TPC4triggerSample);
-			t_tree->SetBranchAddress("TPC5triggerSample",&TPC5triggerSample);
-			t_tree->SetBranchAddress("TPC6triggerSample",&TPC6triggerSample);
-			t_tree->SetBranchAddress("TPC7triggerSample",&TPC7triggerSample);
-			t_tree->SetBranchAddress("TPC8triggerSample",&TPC8triggerSample);
-			t_tree->SetBranchAddress("TPC9triggerSample",&TPC9triggerSample);
+			t_tree->SetBranchAddress("RO_EXTtriggerTime",&RO_EXTtriggerTime);
+
+			t_tree->SetBranchAddress("PMTtriggerFrame",&PMTtriggerFrame);
+			t_tree->SetBranchAddress("PMTtriggerSample",&PMTtriggerSample);
+			t_tree->SetBranchAddress("TPCtriggerFrame",&TPCtriggerFrame);
+			t_tree->SetBranchAddress("TPCtriggerSample",&TPCtriggerSample);
+
 			t_tree->SetBranchAddress("ADCwords_crate0",&ADCwords_crate0);
 			t_tree->SetBranchAddress("ADCwords_crate1",&ADCwords_crate1);
 			t_tree->SetBranchAddress("ADCwords_crate2",&ADCwords_crate2);
@@ -262,10 +258,6 @@ bool makePlots(int rnum){
 
 				int _triggerFrame = triggerFrame;
 				int _triggerSample = triggerSample / 32;
-				int _FEM5triggerFrame = FEM5triggerFrame;
-				int _FEM5triggerSample = FEM5triggerSample;
-				int _FEM6triggerFrame = FEM6triggerFrame;
-				int _FEM6triggerSample = FEM6triggerSample;
 				hTriggerSampleValue->Fill(triggerSample);
 
 				for(int kyle = 0; kyle < N_PMT_waveforms; kyle++){
@@ -283,11 +275,11 @@ bool makePlots(int rnum){
 					}
 				}
 
-				hFrameDiff->Fill(_FEM5triggerFrame - _triggerFrame);
-				hSampleDiff->Fill(_FEM5triggerSample - _triggerSample);
+				hFrameDiff->Fill(TPCtriggerFrame - _triggerFrame);
+				hSampleDiff->Fill(TPCtriggerSample - _triggerSample);
 				if (triggerBitBNB){
-					hFrameDiffBNB->Fill(_FEM5triggerFrame - _triggerFrame);
-					hSampleDiffBNB->Fill(_FEM5triggerSample - _triggerSample);
+					hFrameDiffBNB->Fill(TPCtriggerFrame - _triggerFrame);
+					hSampleDiffBNB->Fill(TPCtriggerSample - _triggerSample);
 					hFrameDiffBetweenROAndBNBTrig->Fill(_triggerFrame - RO_BNBtriggerFrame);
 					hSampleDiffBetweenROAndBNBTrig->Fill(_triggerSample - RO_BNBtriggerSample/32);
 					if (RO_RWMtriggerFrame > 0){
@@ -304,107 +296,16 @@ bool makePlots(int rnum){
 					}
 				}
 				if (triggerBitNuMI){
-					hFrameDiffNuMI->Fill(_FEM5triggerFrame - _triggerFrame);
-					hSampleDiffNuMI->Fill(_FEM5triggerSample - _triggerSample );
+					hFrameDiffNuMI->Fill(TPCtriggerFrame - _triggerFrame);
+					hSampleDiffNuMI->Fill(TPCtriggerSample - _triggerSample );
 					hFrameDiffBetweenROAndNuMITrig->Fill(_triggerFrame - RO_NuMItriggerFrame);
 					hSampleDiffBetweenROAndNuMITrig->Fill(_triggerSample - RO_NuMItriggerSample/32);
 				}
 				if (triggerBitEXT){
-					hFrameDiffEXT->Fill(_FEM5triggerFrame - _triggerFrame);
-					hSampleDiffEXT->Fill(_FEM5triggerSample - _triggerSample);
+					hFrameDiffEXT->Fill(TPCtriggerFrame - _triggerFrame);
+					hSampleDiffEXT->Fill(TPCtriggerSample - _triggerSample);
 					hFrameDiffBetweenROAndEXTTrig->Fill(_triggerFrame - RO_EXTtriggerFrame);
 					hSampleDiffBetweenROAndEXTTrig->Fill(_triggerSample - RO_EXTtriggerSample/32);
-				}
-
-				int referenceFrame = _FEM5triggerFrame;
-				int referenceSample = _FEM5triggerSample;
-				if(_FEM5triggerFrame != referenceFrame){
-					logger << "WARNING: Frames don't agree! (PMT FEM5) : " << FEM5triggerFrame << ", " << referenceFrame << "\n";
-					nt_flags+=1;
-				}
-				if (FEM6triggerFrame != referenceFrame){
-					logger << "WARNING: Frames don't agree! (PMT FEM6) : " << FEM6triggerFrame << ", " << referenceFrame << "\n";
-					nt_flags+=1;
-				}
-				if (TPC1triggerFrame != referenceFrame){
-					logger << "WARNING: Frames don't agree! (TPC1) : " << TPC1triggerFrame << ", " << referenceFrame << "\n";
-					nt_flags+=1;
-				}
-				if (TPC2triggerFrame != referenceFrame){
-					logger << "WARNING: Frames don't agree! (TPC2) : " << TPC2triggerFrame << ", " << referenceFrame << "\n";
-					nt_flags+=1;
-				}
-				if (TPC3triggerFrame != referenceFrame){
-					logger << "WARNING: Frames don't agree! (TPC3) : " << TPC3triggerFrame << ", " << referenceFrame << "\n";
-					nt_flags+=1;
-				}
-				if (TPC4triggerFrame != referenceFrame){
-					logger << "WARNING: Frames don't agree! (TPC4) : " << TPC4triggerFrame << ", " << referenceFrame << "\n";
-					nt_flags+=1;
-				}
-				if (TPC5triggerFrame != referenceFrame){
-					logger << "WARNING: Frames don't agree! (TPC5) : " << TPC5triggerFrame << ", " << referenceFrame << "\n";
-					nt_flags+=1;
-				}
-				if (TPC6triggerFrame != referenceFrame){
-					logger << "WARNING: Frames don't agree! (TPC6) : " << TPC6triggerFrame << ", " << referenceFrame << "\n";
-					nt_flags+=1;
-				}
-				if (TPC7triggerFrame != referenceFrame){
-					logger << "WARNING: Frames don't agree! (TPC7) : " << TPC7triggerFrame << ", " << referenceFrame << "\n";
-					nt_flags+=1;
-				}
-				if (TPC8triggerFrame != referenceFrame){
-					logger << "WARNING: Frames don't agree! (TPC8) : " << TPC8triggerFrame << ", " << referenceFrame << "\n";
-					nt_flags+=1;
-				}
-				if (TPC9triggerFrame != referenceFrame){
-					logger << "WARNING: Frames don't agree! (TPC9) : " << TPC9triggerFrame << ", " << referenceFrame << "\n";
-					nt_flags+=1;
-				}
-				if (FEM5triggerSample != referenceSample){
-					logger << "WARNING: Samples don't agree! (PMT FEM5) : " << FEM5triggerSample << ", " << referenceSample << "\n";
-					nt_flags+=1;
-				}
-				if (FEM6triggerSample != referenceSample){
-					logger << "WARNING: Samples don't agree! (PMT FEM6) : " << FEM6triggerSample << ", " << referenceSample << "\n";
-					nt_flags+=1;
-				}
-				if (TPC1triggerSample != referenceSample){
-					logger << "WARNING: Samples don't agree! (TPC1) : " << TPC1triggerSample << ", " << referenceSample << "\n";
-					nt_flags+=1;
-				}
-				if (TPC2triggerSample != referenceSample){
-					logger << "WARNING: Samples don't agree! (TPC2) : " << TPC2triggerSample << ", " << referenceSample << "\n";
-					nt_flags+=1;
-				}
-				if (TPC3triggerSample != referenceSample){
-					logger << "WARNING: Samples don't agree! (TPC3) : " << TPC3triggerSample << ", " << referenceSample << "\n";
-					nt_flags+=1;
-				}
-				if (TPC4triggerSample != referenceSample){
-					logger << "WARNING: Samples don't agree! (TPC4) : " << TPC4triggerSample << ", " << referenceSample << "\n";
-					nt_flags+=1;
-				}
-				if (TPC5triggerSample != referenceSample){
-					logger << "WARNING: Samples don't agree! (TPC5) : " << TPC5triggerSample << ", " << referenceSample << "\n";
-					nt_flags+=1;
-				}
-				if (TPC6triggerSample != referenceSample){
-					logger << "WARNING: Samples don't agree! (TPC6) : " << TPC6triggerSample << ", " << referenceSample << "\n";
-					nt_flags+=1;
-				}
-				if (TPC7triggerSample != referenceSample){
-					logger << "WARNING: Samples don't agree! (TPC7) : " << TPC7triggerSample << ", " << referenceSample << "\n";
-					nt_flags+=1;
-				}
-				if (TPC8triggerSample != referenceSample){
-					logger << "WARNING: Samples don't agree! (TPC8) : " << TPC8triggerSample << ", " << referenceSample << "\n";
-					nt_flags+=1;
-				}
-				if (TPC9triggerSample != referenceSample){
-					logger << "WARNING: Samples don't agree! (TPC9) : " << TPC9triggerSample << ", " << referenceSample << "\n";
-					nt_flags+=1;
 				}
 
 				ADCwordsEvent = ADCwords_crate0;
